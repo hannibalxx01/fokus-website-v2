@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fokus - Digital Wellness Made Simple</title>
+    <meta name="description" content="Transform your digital life with insights, not restrictions. Smart digital wellness app coming soon.">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.08);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-glow {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(31, 41, 55, 0.3); }
+            50% { box-shadow: 0 8px 40px rgba(31, 41, 55, 0.5); }
+        }
+        
+        .stats-counter {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.95) 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #f7f7f7 0%, #e5e7eb 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="w-full flex justify-center items-center py-12 px-4">
+        <a href="#" class="flex items-center space-x-3 floating-animation">
+            <!-- Fokus Logo SVG -->
+            <div class="glass-card rounded-full p-3">
+                <svg class="h-8 w-8 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-9h2v6h-2V7z"/>
+                </svg>
+            </div>
+            <span class="font-bold text-3xl text-gray-800">foKus</span>
+        </a>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex flex-col items-center justify-center text-center px-4 py-16 md:py-24 lg:py-32 hero-gradient">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-card rounded-3xl p-8 md:p-12 mb-12">
+                <p class="text-gray-500 uppercase tracking-widest text-sm mb-6 font-medium">AI THAT PROTECTS YOUR ATTENTION</p>
+                <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 text-gray-900">
+                    Every day, <span class="italic font-light text-red-600">algorithms</span> steal hours from your life.
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto mb-10 leading-relaxed">
+                    <strong class="text-gray-900">foKus is the AI companion that fights back for you.</strong> It gently brings your attention back when you drift, helps you set and track personal goals, and guides you step by step to achieve them.
+                </p>
+
+                <!-- Email Input and Button -->
+                <div class="flex flex-col sm:flex-row items-stretch justify-center space-y-4 sm:space-y-0 sm:space-x-4 max-w-2xl mx-auto">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 px-8 py-5 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-300 focus:border-gray-400 transition-all duration-300 text-gray-800 placeholder-gray-500 text-lg shadow-lg">
+                    <button class="sm:flex-shrink-0 flex items-center justify-center space-x-3 px-10 py-5 bg-gray-900 text-white rounded-2xl font-bold hover:bg-black transform hover:scale-105 transition-all duration-300 shadow-2xl pulse-glow text-lg">
+                        <span>Stay in Touch</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Trust indicators -->
+                <div class="flex flex-wrap justify-center items-center gap-6 mt-8 text-gray-600 text-sm">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>No spam, ever</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Privacy protected</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Join 2,847+ users fighting back</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Stats Section -->
+    <section class="py-16 md:py-20 lg:py-24 bg-white" id="insights">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                <div class="glass-card stats-counter rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300">
+                    <div class="text-4xl md:text-5xl font-black text-gray-900 mb-3">1hr+</div>
+                    <div class="text-gray-600 text-sm uppercase tracking-wider font-medium">Daily Time Reclaimed</div>
+                </div>
+                <div class="glass-card stats-counter rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300">
+                    <div class="text-4xl md:text-5xl font-black text-gray-900 mb-3">3x</div>
+                    <div class="text-gray-600 text-sm uppercase tracking-wider font-medium">Goal Achievement Rate</div>
+                </div>
+                <div class="glass-card stats-counter rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300">
+                    <div class="text-4xl md:text-5xl font-black text-gray-900 mb-3">94%</div>
+                    <div class="text-gray-600 text-sm uppercase tracking-wider font-medium">Feel More Focused</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section class="py-16 md:py-20 lg:py-24 bg-gray-50" id="about">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">Algorithms Are Winning</h2>
+                <p class="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed">Right now, <span class="text-red-600 font-bold">AI is being used to hijack your attention.</span> Every notification, every endless scroll, every distraction is engineered to steal your time.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                <div class="glass-card p-10 rounded-3xl hover:transform hover:scale-105 transition-all duration-500 group">
+                    <div class="text-6xl mb-8 group-hover:scale-110 transition-transform duration-300">🔄</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Engineered Distraction</h3>
+                    <p class="text-gray-700 mb-8 leading-relaxed text-lg">Algorithms study your behavior to create the perfect trap — endless scrolling designed to steal hours from your life.</p>
+                    <div class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold border border-red-200">
+                        Average: 2.5 hours lost daily
+                    </div>
+                </div>
+                <div class="glass-card p-10 rounded-3xl hover:transform hover:scale-105 transition-all duration-500 group">
+                    <div class="text-6xl mb-8 group-hover:scale-110 transition-transform duration-300">🎯</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Forgotten Goals</h3>
+                    <p class="text-gray-700 mb-8 leading-relaxed text-lg">While you're distracted, your personal goals — fitness, learning, growth — get pushed aside and forgotten.</p>
+                    <div class="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold border border-orange-200">
+                        Goals abandoned: 87% yearly
+                    </div>
+                </div>
+                <div class="glass-card p-10 rounded-3xl hover:transform hover:scale-105 transition-all duration-500 group">
+                    <div class="text-6xl mb-8 group-hover:scale-110 transition-transform duration-300">⏳</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Stolen Potential</h3>
+                    <p class="text-gray-700 mb-8 leading-relaxed text-lg">Every hour lost to mindless scrolling is an hour that could have been invested in becoming who you want to be.</p>
+                    <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold border border-blue-200">
+                        Potential lost: immeasurable
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 md:py-20 lg:py-24 bg-white" id="features">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">foKus Flips The Script</h2>
+                <p class="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed"><span class="text-green-700 font-bold">AI that protects you</span> instead of exploiting you. Your digital ally that transforms attention into achievement.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                <div class="text-center glass-card p-10 rounded-3xl hover:transform hover:scale-105 transition-all duration-500 group">
+                    <div class="text-6xl mb-8 group-hover:rotate-12 transition-transform duration-300">🛡️</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Attention Guardian</h3>
+                    <p class="text-gray-700 leading-relaxed text-lg">Gently notices when you drift and brings you back to what matters — like a personal coach for your focus.</p>
+                </div>
+                <div class="text-center glass-card p-10 rounded-3xl hover:transform hover:scale-105 transition-all duration-500 group">
+                    <div class="text-6xl mb-8 group-hover:rotate-12 transition-transform duration-300">🎯</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Goal Achievement</h3>
+                    <p class="text-gray-700 leading-relaxed text-lg">Helps you set meaningful goals and guides you step by step toward achieving them — turning dreams into reality.</p>
+                </div>
+                <div class="text-center glass-card p-10 rounded-3xl hover:transform hover:scale-105 transition-all duration-500 group">
+                    <div class="text-6xl mb-8 group-hover:rotate-12 transition-transform duration-300">✨</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Time Transformation</h3>
+                    <p class="text-gray-700 leading-relaxed text-lg">Reclaim 1+ hour daily from distractions and reinvest it in learning, fitness, or whatever truly matters to you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-20 md:py-28 bg-gray-900" id="waitlist">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <div class="glass-card rounded-3xl p-12 md:p-16 bg-white/95">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-8">Turn Your Time Into Progress</h2>
+                <p class="text-xl md:text-2xl text-gray-700 mb-12 leading-relaxed">Instead of <span class="text-red-600 font-bold">stealing your focus</span>, foKus <span class="text-green-700 font-bold">gives it back</span> — turning your goals into reality.</p>
+                
+                <div class="flex flex-col sm:flex-row items-stretch justify-center space-y-4 sm:space-y-0 sm:space-x-4 max-w-2xl mx-auto mb-8">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 px-8 py-5 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-300 focus:border-gray-400 transition-all duration-300 text-gray-800 placeholder-gray-500 text-lg shadow-lg">
+                    <button class="sm:flex-shrink-0 flex items-center justify-center space-x-3 px-10 py-5 bg-gray-900 text-white rounded-2xl font-bold hover:bg-black transform hover:scale-105 transition-all duration-300 shadow-2xl pulse-glow text-lg">
+                        <span>Stay in Touch</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <p class="text-gray-600 text-lg">🔒 Privacy protected. Join the fight against algorithmic attention theft.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-gray-900 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h3 class="font-bold text-2xl text-white mb-2">foKus</h3>
+                    <p class="text-gray-400 text-lg">AI that fights for your attention</p>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="#privacy" class="text-gray-400 hover:text-white transition-colors text-lg">Privacy</a>
+                    <a href="#terms" class="text-gray-400 hover:text-white transition-colors text-lg">Terms</a>
+                    <a href="mailto:hello@fokusapp.com" class="text-gray-400 hover:text-white transition-colors text-lg">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
