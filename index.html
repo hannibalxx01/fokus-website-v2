@@ -17,7 +17,7 @@
             background-color: #ffffff;
         }
         
-        /* Mobile-specific optimizations */
+        /* Mobile-first optimizations */
         @media (max-width: 640px) {
             .mobile-padding {
                 padding-left: 1rem;
@@ -28,37 +28,84 @@
                 line-height: 1.75rem;
             }
             .mobile-hero-text {
-                font-size: 2.5rem;
+                font-size: 2.25rem;
                 line-height: 1.1;
+            }
+            .mobile-section-padding {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .mobile-card-padding {
+                padding: 1.5rem;
+            }
+            .mobile-gap {
+                gap: 1rem;
             }
         }
         
         /* Ensure touch targets are large enough on mobile */
         @media (max-width: 768px) {
             button {
-                min-height: 44px;
-                padding: 0.75rem 1.5rem;
+                min-height: 48px;
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
             }
             input {
-                min-height: 44px;
-                padding: 0.75rem 1rem;
+                min-height: 48px;
+                padding: 0.875rem 1rem;
+                font-size: 1rem;
+            }
+            
+            /* Mobile typography */
+            .mobile-h1 {
+                font-size: 2rem;
+                line-height: 1.1;
+            }
+            .mobile-h2 {
+                font-size: 1.5rem;
+                line-height: 1.2;
+            }
+            .mobile-h3 {
+                font-size: 1.25rem;
+                line-height: 1.3;
+            }
+            
+            /* Mobile spacing */
+            .mobile-mb-8 {
+                margin-bottom: 2rem;
+            }
+            .mobile-mb-6 {
+                margin-bottom: 1.5rem;
+            }
+            .mobile-mb-4 {
+                margin-bottom: 1rem;
             }
         }
         
-        /* Prevent horizontal scroll */
+        /* Prevent horizontal scroll and improve mobile UX */
         html, body {
             overflow-x: hidden;
+        }
+        
+        /* Mobile-specific grid adjustments */
+        @media (max-width: 640px) {
+            .mobile-grid-1 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+            .mobile-grid-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
     </style>
 </head>
 <body class="bg-white text-gray-900">
 
     <!-- Header -->
-    <header class="w-full py-6 px-4 border-b border-gray-100">
+    <header class="w-full py-4 sm:py-6 px-4 border-b border-gray-100 mobile-padding">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <!-- Logo -->
             <div class="flex items-center space-x-2">
-                <svg class="h-6 w-6 text-black" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="h-5 w-5 sm:h-6 sm:w-6 text-black" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 3V6M3 3H6M21 3H18M21 3V6M3 21V18M3 21H6M21 21H18M21 21V18" 
                           stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     <path d="M12 7C9 7 7 9 7 12C7 15 9 17 12 17C15 17 17 15 17 12C17 9 15 7 12 7Z" 
@@ -66,8 +113,8 @@
                     <path d="M12 7V17" stroke="currentColor" stroke-width="1"/>
                 </svg>
                 <div>
-                    <h1 class="text-xl font-bold text-black tracking-wide">foKus</h1>
-                    <p class="text-xs text-gray-500 font-medium tracking-wider uppercase -mt-0.5" style="font-size: 10px;">Your attention, your choice</p>
+                    <h1 class="text-lg sm:text-xl font-bold text-black tracking-wide">foKus</h1>
+                    <p class="hidden sm:block text-xs text-gray-500 font-medium tracking-wider uppercase -mt-0.5" style="font-size: 10px;">Your attention, your choice</p>
                 </div>
             </div>
 
@@ -80,7 +127,7 @@
             </nav>
 
             <!-- CTA Button -->
-            <a href="#waitlist" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+            <a href="#waitlist" class="hidden sm:block bg-black text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
                 Join Waitlist
             </a>
 
@@ -118,77 +165,78 @@
             </p>
 
             <!-- Email Input - Mobile Optimized -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3 max-w-md sm:max-w-lg mx-auto w-full">
+            <form class="email-form flex flex-col sm:flex-row items-stretch sm:items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3 max-w-md sm:max-w-lg mx-auto w-full">
                 <input type="email" 
                        placeholder="your@email.com" 
-                       class="flex-1 w-full px-4 sm:px-6 py-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black focus:ring-2 focus:ring-black focus:ring-opacity-20 transition-all text-center sm:text-left text-gray-700 text-base">
-                <button class="w-full sm:w-auto px-6 sm:px-8 py-4 bg-black text-white rounded-lg hover:bg-gray-800 active:bg-gray-900 transition-colors font-medium text-base whitespace-nowrap">
+                       class="flex-1 w-full px-4 sm:px-6 py-4 border border-gray-200 rounded-lg focus:outline-none focus:border-black focus:ring-2 focus:ring-black focus:ring-opacity-20 transition-all text-center sm:text-left text-gray-700 text-base"
+                       required>
+                <button type="submit" class="w-full sm:w-auto px-6 sm:px-8 py-4 bg-black text-white rounded-lg hover:bg-gray-800 active:bg-gray-900 transition-colors font-medium text-base whitespace-nowrap">
                     Stay in Touch
                 </button>
-            </div>
+            </form>
         </div>
     </main>
 
     <!-- Stats Section -->
-    <section class="py-20 bg-gray-50" id="insights">
-        <div class="max-w-5xl mx-auto px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
+    <section class="py-12 sm:py-20 bg-gray-50 mobile-section-padding" id="insights">
+        <div class="max-w-5xl mx-auto mobile-padding px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center">
                 <div>
-                    <div class="text-4xl font-light text-black mb-2">1hr+</div>
-                    <div class="text-gray-500 text-sm">Daily time reclaimed</div>
+                    <div class="text-3xl sm:text-4xl font-light text-black mb-2">1hr+</div>
+                    <div class="text-gray-500 text-sm sm:text-base mobile-text-lg">Daily time reclaimed</div>
                 </div>
                 <div>
-                    <div class="text-4xl font-light text-black mb-2">3x</div>
-                    <div class="text-gray-500 text-sm">Goal achievement</div>
+                    <div class="text-3xl sm:text-4xl font-light text-black mb-2">3x</div>
+                    <div class="text-gray-500 text-sm sm:text-base mobile-text-lg">Goal achievement</div>
                 </div>
                 <div>
-                    <div class="text-4xl font-light text-black mb-2">94%</div>
-                    <div class="text-gray-500 text-sm">Feel more focused</div>
+                    <div class="text-3xl sm:text-4xl font-light text-black mb-2">94%</div>
+                    <div class="text-gray-500 text-sm sm:text-base mobile-text-lg">Feel more focused</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Problem Section - Critical for Market Validation -->
-    <section class="py-20 bg-red-50" id="problem">
-        <div class="max-w-5xl mx-auto px-4 text-center">
-            <h3 class="text-4xl font-light text-black mb-8">Algorithms Are Winning</h3>
-            <p class="text-lg text-gray-700 mb-16 max-w-3xl mx-auto">
+    <section class="py-12 sm:py-20 bg-red-50 mobile-section-padding" id="problem">
+        <div class="max-w-5xl mx-auto mobile-padding px-4 text-center">
+            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6 sm:mb-8 mobile-h2">Algorithms Are Winning</h3>
+            <p class="text-base sm:text-lg text-gray-700 mb-12 sm:mb-16 max-w-3xl mx-auto mobile-text-lg">
                 Right now, AI is designed to steal your attention. Every scroll, every notification, every distraction is engineered to hijack your focus.
             </p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl border border-red-100">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mobile-gap mobile-grid-1">
+                <div class="bg-white p-6 sm:p-8 rounded-xl border border-red-100 mobile-card-padding">
                     <div class="text-3xl mb-4">⏰</div>
-                    <h4 class="text-xl font-medium text-black mb-3">2.5 Hours Lost</h4>
-                    <p class="text-gray-600 text-sm">Average daily time stolen by endless scrolling and algorithmic feeds</p>
+                    <h4 class="text-lg sm:text-xl font-medium text-black mb-3 mobile-h3">2.5 Hours Lost</h4>
+                    <p class="text-gray-600 text-sm sm:text-base mobile-text-lg">Average daily time stolen by endless scrolling and algorithmic feeds</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl border border-red-100">
+                <div class="bg-white p-6 sm:p-8 rounded-xl border border-red-100 mobile-card-padding">
                     <div class="text-3xl mb-4">🎯</div>
-                    <h4 class="text-xl font-medium text-black mb-3">Goals Forgotten</h4>
-                    <p class="text-gray-600 text-sm">87% of personal goals abandoned while distracted by designed addiction</p>
+                    <h4 class="text-lg sm:text-xl font-medium text-black mb-3 mobile-h3">Goals Forgotten</h4>
+                    <p class="text-gray-600 text-sm sm:text-base mobile-text-lg">87% of personal goals abandoned while distracted by designed addiction</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl border border-red-100">
+                <div class="bg-white p-6 sm:p-8 rounded-xl border border-red-100 mobile-card-padding">
                     <div class="text-3xl mb-4">💔</div>
-                    <h4 class="text-xl font-medium text-black mb-3">Potential Wasted</h4>
-                    <p class="text-gray-600 text-sm">Every stolen hour could have been invested in becoming who you want to be</p>
+                    <h4 class="text-lg sm:text-xl font-medium text-black mb-3 mobile-h3">Potential Wasted</h4>
+                    <p class="text-gray-600 text-sm sm:text-base mobile-text-lg">Every stolen hour could have been invested in becoming who you want to be</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- How foKus Works - Comprehensive User Journey -->
-    <section class="py-20 bg-white" id="how-it-works">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h3 class="text-4xl font-light text-black mb-4">How foKus Works</h3>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+    <section class="py-12 sm:py-20 bg-white mobile-section-padding" id="how-it-works">
+        <div class="max-w-7xl mx-auto mobile-padding px-4">
+            <div class="text-center mb-12 sm:mb-16">
+                <h3 class="text-3xl sm:text-4xl font-light text-black mb-4 mobile-h2">How foKus Works</h3>
+                <p class="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mobile-text-lg">
                     Your AI-powered focus companion that runs quietly in the background, understanding your habits and guiding you toward your goals.
                 </p>
             </div>
 
             <!-- Step-by-Step User Journey -->
-            <div class="space-y-16">
+            <div class="space-y-12 sm:space-y-16">
                 
                 <!-- Step 1: Setup & Permission -->
                 <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
@@ -376,9 +424,9 @@
             </div>
 
             <!-- Key Features Summary -->
-            <div class="mt-20 bg-gray-50 rounded-2xl p-8">
-                <h4 class="text-2xl font-light text-center text-black mb-8">What You Get</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="mt-12 sm:mt-20 bg-gray-50 rounded-2xl p-6 sm:p-8 mobile-card-padding">
+                <h4 class="text-xl sm:text-2xl font-light text-center text-black mb-6 sm:mb-8 mobile-h3">What You Get</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mobile-gap">
                     <div class="text-center">
                         <div class="bg-white p-4 rounded-xl shadow-sm">
                             <div class="text-2xl mb-3">📊</div>
@@ -413,31 +461,31 @@
     </section>
 
     <!-- Partner Integration Section -->
-    <section class="py-16 sm:py-20 bg-blue-50" id="partners">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6">Partner Marketplace</h3>
-            <p class="text-lg sm:text-xl text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
-                <strong>foKus connects you with the best tools to achieve your goals</strong> — from fitness apps to learning platforms. Your AI companion knows when to suggest the perfect resource at the perfect moment.
+    <section class="py-12 sm:py-20 bg-blue-50 mobile-section-padding" id="partners">
+        <div class="max-w-6xl mx-auto mobile-padding px-4 sm:px-6 text-center">
+            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6 mobile-h2">Partner Marketplace</h3>
+            <p class="text-base sm:text-xl text-gray-700 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed mobile-text-lg">
+                <strong>foKus connects you with the best tools.</strong> Smart suggestions at the right moment.
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                 <div class="bg-white p-8 rounded-xl border border-blue-100 shadow-sm">
                     <div class="text-3xl mb-4">📚</div>
                     <h4 class="text-xl font-semibold text-black mb-3">Learning Goals</h4>
-                    <p class="text-gray-600 mb-4">Want to learn Spanish? foKus suggests Duolingo sessions when you're most focused.</p>
-                    <div class="text-sm text-blue-600 font-medium">Smart tool recommendations</div>
+                    <p class="text-gray-600 mb-4">Smart app suggestions when you're focused.</p>
+                    <div class="text-sm text-blue-600 font-medium">Tool recommendations</div>
                 </div>
                 <div class="bg-white p-8 rounded-xl border border-blue-100 shadow-sm">
                     <div class="text-3xl mb-4">💪</div>
                     <h4 class="text-xl font-semibold text-black mb-3">Fitness Goals</h4>
-                    <p class="text-gray-600 mb-4">Training for a marathon? Get personalized workout suggestions and progress tracking.</p>
-                    <div class="text-sm text-blue-600 font-medium">Partner app integration</div>
+                    <p class="text-gray-600 mb-4">Personalized workout suggestions and tracking.</p>
+                    <div class="text-sm text-blue-600 font-medium">App integration</div>
                 </div>
                 <div class="bg-white p-8 rounded-xl border border-blue-100 shadow-sm">
                     <div class="text-3xl mb-4">💼</div>
                     <h4 class="text-xl font-semibold text-black mb-3">Career Goals</h4>
-                    <p class="text-gray-600 mb-4">Building skills? foKus connects you with courses, mentors, and practice opportunities.</p>
-                    <div class="text-sm text-blue-600 font-medium">Professional network access</div>
+                    <p class="text-gray-600 mb-4">Connect with courses and practice opportunities.</p>
+                    <div class="text-sm text-blue-600 font-medium">Professional network</div>
                 </div>
             </div>
 
@@ -538,10 +586,10 @@
     </section>
 
     <!-- Social Proof Section -->
-    <section class="py-16 sm:py-20 bg-white" id="testimonials">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-            <h3 class="text-3xl sm:text-4xl font-light text-black mb-4">People Want This</h3>
-            <p class="text-lg text-gray-600 mb-12">Early feedback from the community</p>
+    <section class="py-12 sm:py-20 bg-white mobile-section-padding" id="testimonials">
+        <div class="max-w-6xl mx-auto mobile-padding px-4 sm:px-6 text-center">
+            <h3 class="text-3xl sm:text-4xl font-light text-black mb-4 mobile-h2">People Want This</h3>
+            <p class="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12 mobile-text-lg">Early feedback from the community</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="bg-gray-50 p-6 rounded-xl">
@@ -564,7 +612,7 @@
                 </p>
                 <div class="flex justify-center space-x-8 text-sm text-gray-600">
                     <div>🎓 Stanford AI Research</div>
-                    <div>🏢 Ex-Google, Meta</div>
+                    <div>🏢 Ex-Dassault Systems, Goldman Sachs</div>
                     <div>📱 Digital Wellness Experts</div>
                 </div>
             </div>
@@ -572,10 +620,10 @@
     </section>
 
     <!-- Pricing Section -->
-    <section class="py-16 sm:py-20 bg-gray-50" id="pricing">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6">Choose Your Focus Level</h3>
-            <p class="text-lg text-gray-600 mb-12">Start free, upgrade when you're ready to achieve more</p>
+    <section class="py-12 sm:py-20 bg-gray-50 mobile-section-padding" id="pricing">
+        <div class="max-w-6xl mx-auto mobile-padding px-4 sm:px-6 text-center">
+            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6 mobile-h2">Choose Your Focus Level</h3>
+            <p class="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12 mobile-text-lg">Start free, upgrade when you're ready to achieve more</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
                 <!-- Free Plan -->
@@ -713,19 +761,20 @@
     </section>
 
     <!-- Final CTA - Optimized for Market Testing -->
-    <section class="py-16 sm:py-20 bg-gray-900" id="waitlist">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <h3 class="text-3xl sm:text-4xl font-light text-white mb-4">Join the Waitlist</h3>
-            <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">Be among the first to experience AI that works for you, not against you. Get early access and exclusive benefits.</p>
+    <section class="py-12 sm:py-20 bg-gray-900 mobile-section-padding" id="waitlist">
+        <div class="max-w-4xl mx-auto mobile-padding px-4 sm:px-6 text-center">
+            <h3 class="text-3xl sm:text-4xl font-light text-white mb-4 mobile-h2">Join the Waitlist</h3>
+            <p class="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto mobile-text-lg">Be among the first to experience AI that works for you, not against you. Get early access and exclusive benefits.</p>
             
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3 mb-8 max-w-md sm:max-w-lg mx-auto">
+            <form class="email-form flex flex-col sm:flex-row items-stretch sm:items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3 mb-8 max-w-md sm:max-w-lg mx-auto">
                 <input type="email" 
                        placeholder="your@email.com" 
-                       class="flex-1 w-full px-4 sm:px-6 py-4 border border-gray-600 bg-gray-800 rounded-lg focus:outline-none focus:border-white focus:ring-2 focus:ring-white focus:ring-opacity-20 transition-all text-center sm:text-left text-white placeholder-gray-400 text-base">
-                <button class="w-full sm:w-auto px-8 sm:px-10 py-4 bg-white text-black rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors font-semibold text-base whitespace-nowrap">
+                       class="flex-1 w-full px-4 sm:px-6 py-4 border border-gray-600 bg-gray-800 rounded-lg focus:outline-none focus:border-white focus:ring-2 focus:ring-white focus:ring-opacity-20 transition-all text-center sm:text-left text-white placeholder-gray-400 text-base"
+                       required>
+                <button type="submit" class="w-full sm:w-auto px-8 sm:px-10 py-4 bg-white text-black rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors font-semibold text-base whitespace-nowrap">
                     Join the Waitlist
                 </button>
-            </div>
+            </form>
             
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto text-sm text-gray-300">
                 <div class="flex items-center justify-center space-x-2">
@@ -764,6 +813,192 @@
         </div>
     </footer>
 
+    <!-- User Profile Modal -->
+    <div id="userProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 sm:p-8">
+                <!-- Header -->
+                <div class="text-center mb-6">
+                    <div class="text-3xl mb-2">🎯</div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Help Us Personalize foKus for You!</h3>
+                    <p class="text-gray-600 text-sm">Quick 2-minute survey to understand your needs better</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mb-6">
+                    <div class="flex justify-between text-sm text-gray-500 mb-2">
+                        <span>Step <span id="currentStep">1</span> of 3</span>
+                        <span id="progressPercent">33%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 33%"></div>
+                    </div>
+                </div>
+
+                <!-- Step 1: User Profile -->
+                <div id="step1" class="survey-step">
+                    <h4 class="text-lg font-semibold text-black mb-4">Who are you?</h4>
+                    <p class="text-gray-600 text-sm mb-6">Select all that apply</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="userType" value="student" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">🎓 Student</div>
+                                <div class="text-sm text-gray-500">College/University student</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="userType" value="professional" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">💼 Professional</div>
+                                <div class="text-sm text-gray-500">Working professional</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="userType" value="freelancer" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">💻 Freelancer</div>
+                                <div class="text-sm text-gray-500">Self-employed/contractor</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="userType" value="manager" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">👥 Manager/Leader</div>
+                                <div class="text-sm text-gray-500">Team lead or manager</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="userType" value="creator" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">🎨 Creator</div>
+                                <div class="text-sm text-gray-500">Artist, writer, content creator</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="userType" value="entrepreneur" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">🚀 Entrepreneur</div>
+                                <div class="text-sm text-gray-500">Business owner/founder</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: Pain Points -->
+                <div id="step2" class="survey-step hidden">
+                    <h4 class="text-lg font-semibold text-black mb-4">What's your biggest struggle with focus & goals?</h4>
+                    <p class="text-gray-600 text-sm mb-6">Select your top 3 challenges</p>
+                    <div class="space-y-3 mb-6">
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="distractions" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">📱 Constant distractions (social media, notifications)</div>
+                                <div class="text-sm text-gray-500">Can't stay focused for long periods</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="motivation" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">😴 Lack of motivation</div>
+                                <div class="text-sm text-gray-500">Hard to get started or stay motivated</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="too-many-tools" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">🔧 Too many productivity tools</div>
+                                <div class="text-sm text-gray-500">Overwhelmed by apps and systems</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="burnout" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">🔥 Burnout and overwhelm</div>
+                                <div class="text-sm text-gray-500">Feeling exhausted and overloaded</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="goal-setting" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">🎯 Poor goal setting & tracking</div>
+                                <div class="text-sm text-gray-500">Don't know how to set or achieve goals</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="time-management" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">⏰ Poor time management</div>
+                                <div class="text-sm text-gray-500">Struggle to prioritize and manage time</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="painPoints" value="procrastination" class="mr-3 text-blue-600">
+                            <div>
+                                <div class="font-medium">⏳ Procrastination</div>
+                                <div class="text-sm text-gray-500">Constantly putting things off</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 3: Usage Context -->
+                <div id="step3" class="survey-step hidden">
+                    <h4 class="text-lg font-semibold text-black mb-4">When do you most need focus help?</h4>
+                    <p class="text-gray-600 text-sm mb-6">Select all situations where you struggle</p>
+                    <div class="space-y-3 mb-6">
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="usageContext" value="work-hours" class="mr-3 text-blue-600">
+                            <div class="font-medium">💼 During work hours</div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="usageContext" value="personal-goals" class="mr-3 text-blue-600">
+                            <div class="font-medium">🎯 Working on personal goals</div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="usageContext" value="study-time" class="mr-3 text-blue-600">
+                            <div class="font-medium">📚 Study/learning sessions</div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="usageContext" value="creative-work" class="mr-3 text-blue-600">
+                            <div class="font-medium">🎨 Creative work/projects</div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="usageContext" value="evening-routine" class="mr-3 text-blue-600">
+                            <div class="font-medium">🌙 Evening routines/wind-down</div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
+                            <input type="checkbox" name="usageContext" value="morning-routine" class="mr-3 text-blue-600">
+                            <div class="font-medium">🌅 Morning routines/planning</div>
+                        </label>
+                    </div>
+
+                    <!-- Optional comment -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Anything else you'd like us to know?</label>
+                        <textarea id="additionalComments" placeholder="Tell us more about your focus challenges..." 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none" 
+                                rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between pt-6 border-t border-gray-100">
+                    <button id="prevBtn" class="px-6 py-2 text-gray-600 hover:text-black transition-colors hidden">
+                        ← Previous
+                    </button>
+                    <div class="flex-1"></div>
+                    <button id="nextBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Next →
+                    </button>
+                    <button id="submitBtn" class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium hidden">
+                        Complete Survey 🎉
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
         function toggleMobileMenu() {
@@ -786,6 +1021,146 @@
                 }
             });
         });
+
+        // User Profile Survey Logic
+        let currentSurveyStep = 1;
+        const totalSteps = 3;
+
+        function updateProgress() {
+            const progress = (currentSurveyStep / totalSteps) * 100;
+            document.getElementById('currentStep').textContent = currentSurveyStep;
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.survey-step').forEach(el => el.classList.add('hidden'));
+            
+            // Show current step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (step === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (step === totalSteps) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+            
+            updateProgress();
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const checked = document.querySelectorAll('input[name="userType"]:checked').length;
+                return checked > 0;
+            }
+            if (step === 2) {
+                const checked = document.querySelectorAll('input[name="painPoints"]:checked').length;
+                return checked > 0;
+            }
+            if (step === 3) {
+                const checked = document.querySelectorAll('input[name="usageContext"]:checked').length;
+                return checked > 0;
+            }
+            return true;
+        }
+
+        function collectSurveyData() {
+            const userTypes = Array.from(document.querySelectorAll('input[name="userType"]:checked')).map(el => el.value);
+            const painPoints = Array.from(document.querySelectorAll('input[name="painPoints"]:checked')).map(el => el.value);
+            const usageContext = Array.from(document.querySelectorAll('input[name="usageContext"]:checked')).map(el => el.value);
+            const comments = document.getElementById('additionalComments').value;
+
+            return {
+                userTypes,
+                painPoints,
+                usageContext,
+                comments,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        function showUserProfileModal() {
+            document.getElementById('userProfileModal').classList.remove('hidden');
+            showStep(1);
+        }
+
+        function closeUserProfileModal() {
+            document.getElementById('userProfileModal').classList.add('hidden');
+            currentSurveyStep = 1;
+        }
+
+        // Event listeners
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (validateStep(currentSurveyStep)) {
+                if (currentSurveyStep < totalSteps) {
+                    currentSurveyStep++;
+                    showStep(currentSurveyStep);
+                }
+            } else {
+                alert('Please select at least one option before continuing.');
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentSurveyStep > 1) {
+                currentSurveyStep--;
+                showStep(currentSurveyStep);
+            }
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            if (validateStep(currentSurveyStep)) {
+                const surveyData = collectSurveyData();
+                
+                // Store survey data with email
+                const storedEmails = JSON.parse(localStorage.getItem('fokusWaitlist') || '[]');
+                if (storedEmails.length > 0) {
+                    const lastEntry = storedEmails[storedEmails.length - 1];
+                    lastEntry.surveyData = surveyData;
+                    localStorage.setItem('fokusWaitlist', JSON.stringify(storedEmails));
+                }
+
+                // Show success and close modal
+                closeUserProfileModal();
+                showMessage('Thanks for the detailed feedback! This will help us build the perfect focus companion for you.', 'success');
+                
+                // Track survey completion
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'survey_complete', {
+                        'event_category': 'engagement',
+                        'event_label': 'user_profile_survey',
+                        'value': 1
+                    });
+                }
+            } else {
+                alert('Please select at least one option before submitting.');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('userProfileModal').addEventListener('click', (e) => {
+            if (e.target.id === 'userProfileModal') {
+                closeUserProfileModal();
+            }
+        });
+
+        // Expose function globally for script.js integration
+        window.showUserProfileModal = showUserProfileModal;
+
     </script>
 </body>
 </html>

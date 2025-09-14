@@ -53,7 +53,9 @@ function initScrollAnimations() {
 
 // Enhanced navbar scroll effects
 function initNavbarEffects() {
-    const navbar = document.querySelector('.navbar');
+    const navbar = document.querySelector('header');
+    if (!navbar) return;
+    
     let lastScrollY = window.scrollY;
     let ticking = false;
 
@@ -171,11 +173,14 @@ function updateWaitlistCounter() {
 // Handle email form submission
 async function handleEmailSubmit(e) {
     e.preventDefault();
+    console.log('Form submitted!'); // Debug log
     
     const form = e.target;
     const emailInput = form.querySelector('input[type="email"]');
     const submitButton = form.querySelector('button[type="submit"]');
     const email = emailInput.value.trim();
+    
+    console.log('Email:', email); // Debug log
     
     if (!email) {
         showMessage('Please enter your email address', 'error');
@@ -196,14 +201,23 @@ async function handleEmailSubmit(e) {
         // Store email locally (you can replace this with your backend API)
         await storeEmail(email);
         
-        // Show success message
-        showMessage('Thanks! You\'re on the waitlist. We\'ll be in touch soon!', 'success');
-        
         // Clear form
         emailInput.value = '';
         
         // Track conversion (optional - integrate with your analytics)
         trackEmailSignup(email);
+        
+        // Show user profile modal after successful email submission
+        console.log('Email stored successfully, showing modal in 1 second...'); // Debug log
+        setTimeout(() => {
+            console.log('Attempting to show modal...'); // Debug log
+            if (typeof window.showUserProfileModal === 'function') {
+                console.log('Modal function found, opening modal...'); // Debug log
+                window.showUserProfileModal();
+            } else {
+                console.error('showUserProfileModal function not found!'); // Debug log
+            }
+        }, 1000);
         
     } catch (error) {
         console.error('Error storing email:', error);
@@ -354,11 +368,11 @@ document.addEventListener('click', function(e) {
 
 // Add scroll effect to navbar
 window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
+    const navbar = document.querySelector('header');
+    if (navbar && window.scrollY > 50) {
         navbar.style.background = 'rgba(255, 255, 255, 0.95)';
         navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-    } else {
+    } else if (navbar) {
         navbar.style.background = 'rgba(255, 255, 255, 0.95)';
         navbar.style.boxShadow = 'none';
     }
@@ -371,19 +385,28 @@ function viewStoredEmails() {
     return storedEmails;
 }
 
-// Admin function to export emails (for development)
+// Admin function to export emails and survey data (for development)
 function exportEmails() {
     const storedEmails = JSON.parse(localStorage.getItem('fokusWaitlist') || '[]');
-    const csvContent = 'data:text/csv;charset=utf-8,' + 
-        'Email,Timestamp,Source,Referrer\n' +
-        storedEmails.map(entry => 
-            `${entry.email},${entry.timestamp},${entry.source},${entry.referrer}`
-        ).join('\n');
+    
+    // Create CSV header with survey fields
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    csvContent += 'Email,Timestamp,Source,Referrer,UserTypes,PainPoints,UsageContext,Comments\n';
+    
+    // Add data rows
+    csvContent += storedEmails.map(entry => {
+        const userTypes = entry.surveyData ? entry.surveyData.userTypes.join(';') : '';
+        const painPoints = entry.surveyData ? entry.surveyData.painPoints.join(';') : '';
+        const usageContext = entry.surveyData ? entry.surveyData.usageContext.join(';') : '';
+        const comments = entry.surveyData ? entry.surveyData.comments.replace(/[",\n\r]/g, ' ') : '';
+        
+        return `${entry.email},${entry.timestamp},${entry.source},${entry.referrer},"${userTypes}","${painPoints}","${usageContext}","${comments}"`;
+    }).join('\n');
     
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'fokus-waitlist.csv');
+    link.setAttribute('download', 'fokus-waitlist-with-survey.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
