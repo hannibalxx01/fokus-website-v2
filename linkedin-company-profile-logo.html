@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>foKus LinkedIn Company Profile Logo</title>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            padding: 2rem; 
+            background: #f9fafb; 
+            text-align: center;
+        }
+        .preview-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin: 2rem 0;
+        }
+        .logo-preview {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            margin: 0 auto;
+            position: relative;
+        }
+        .download-btn {
+            background: #0077b5;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            transition: background 0.3s;
+        }
+        .download-btn:hover {
+            background: #005a8b;
+        }
+        .specs {
+            color: #6b7280;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        h1 { color: #1f2937; margin-bottom: 0.5rem; }
+        .description {
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>foKus LinkedIn Company Profile Logo</h1>
+    <p class="description">
+        Complete company logo with icon, brand name, and motto perfectly sized for LinkedIn company profile picture (300×300px).
+        This circular format looks professional and fits perfectly in LinkedIn's company profile layout.
+    </p>
+
+    <div class="preview-container">
+        <div class="logo-preview" id="logoPreview">
+            <!-- Logo content will be drawn on canvas -->
+        </div>
+        
+        <canvas id="companyLogo" width="300" height="300" style="display: none;"></canvas>
+        
+        <button class="download-btn" onclick="downloadCompanyLogo()">
+            📥 Download LinkedIn Company Logo (300×300px)
+        </button>
+        
+        <div class="specs">
+            Perfect for LinkedIn company profile • 300×300px • PNG format • Professional quality
+        </div>
+    </div>
+
+    <!-- Alternative white background version -->
+    <div class="preview-container" style="background: #f8fafc;">
+        <h2 style="color: #1f2937; margin-bottom: 1rem;">Alternative: White Background Version</h2>
+        <div class="logo-preview" id="logoPreviewWhite" style="background: white; border: 3px solid #e5e7eb;">
+            <!-- Alternative logo content -->
+        </div>
+        
+        <canvas id="companyLogoWhite" width="300" height="300" style="display: none;"></canvas>
+        
+        <button class="download-btn" onclick="downloadCompanyLogoWhite()" style="background: #6366f1;">
+            📥 Download White Background Version
+        </button>
+        
+        <div class="specs">
+            Clean white background • Better contrast • Same 300×300px format
+        </div>
+    </div>
+
+    <script>
+        function drawCompanyLogo(canvasId, backgroundColor = '#f8fafc') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const size = 300;
+            const center = size / 2;
+            
+            // Clear canvas with background
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Create circular clipping mask
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(center, center, center - 5, 0, 2 * Math.PI);
+            ctx.clip();
+            
+            // Fill circle background
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Logo icon (top center)
+            const iconSize = 45;
+            const iconY = center - 45;
+            
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            
+            // Draw corner brackets (scaled and positioned)
+            const scale = iconSize / 24;
+            const offsetX = center - (12 * scale);
+            const offsetY = iconY - (12 * scale);
+            
+            // Corner brackets
+            ctx.beginPath();
+            // Top-left
+            ctx.moveTo(offsetX + 3*scale, offsetY + 3*scale);
+            ctx.lineTo(offsetX + 3*scale, offsetY + 6*scale);
+            ctx.moveTo(offsetX + 3*scale, offsetY + 3*scale);
+            ctx.lineTo(offsetX + 6*scale, offsetY + 3*scale);
+            // Top-right
+            ctx.moveTo(offsetX + 21*scale, offsetY + 3*scale);
+            ctx.lineTo(offsetX + 18*scale, offsetY + 3*scale);
+            ctx.moveTo(offsetX + 21*scale, offsetY + 3*scale);
+            ctx.lineTo(offsetX + 21*scale, offsetY + 6*scale);
+            // Bottom-left
+            ctx.moveTo(offsetX + 3*scale, offsetY + 21*scale);
+            ctx.lineTo(offsetX + 3*scale, offsetY + 18*scale);
+            ctx.moveTo(offsetX + 3*scale, offsetY + 21*scale);
+            ctx.lineTo(offsetX + 6*scale, offsetY + 21*scale);
+            // Bottom-right
+            ctx.moveTo(offsetX + 21*scale, offsetY + 21*scale);
+            ctx.lineTo(offsetX + 18*scale, offsetY + 21*scale);
+            ctx.moveTo(offsetX + 21*scale, offsetY + 21*scale);
+            ctx.lineTo(offsetX + 21*scale, offsetY + 18*scale);
+            ctx.stroke();
+            
+            // Center circle
+            ctx.beginPath();
+            ctx.arc(center, iconY, 5*scale, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Center line
+            ctx.beginPath();
+            ctx.moveTo(center, iconY - 5*scale);
+            ctx.lineTo(center, iconY + 5*scale);
+            ctx.stroke();
+            
+            // Brand name "foKus"
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 42px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('foKus', center, center + 15);
+            
+            // Motto
+            ctx.font = '14px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillStyle = '#6b7280';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Split motto into two lines for better fit
+            const mottoY = center + 55;
+            ctx.fillText('YOUR ATTENTION,', center, mottoY);
+            ctx.fillText('YOUR CHOICE', center, mottoY + 18);
+            
+            ctx.restore();
+            
+            // Add subtle border
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(center, center, center - 5, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+        
+        function downloadCompanyLogo() {
+            drawCompanyLogo('companyLogo', '#f8fafc');
+            const canvas = document.getElementById('companyLogo');
+            const link = document.createElement('a');
+            link.download = 'fokus-linkedin-company-profile-300x300.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+        }
+        
+        function downloadCompanyLogoWhite() {
+            drawCompanyLogo('companyLogoWhite', '#ffffff');
+            const canvas = document.getElementById('companyLogoWhite');
+            const link = document.createElement('a');
+            link.download = 'fokus-linkedin-company-profile-white-300x300.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+        }
+        
+        // Create preview versions
+        window.onload = function() {
+            // Preview version (smaller for display)
+            const previewCanvas = document.createElement('canvas');
+            previewCanvas.width = 300;
+            previewCanvas.height = 300;
+            previewCanvas.style.width = '300px';
+            previewCanvas.style.height = '300px';
+            previewCanvas.style.borderRadius = '50%';
+            
+            drawCompanyLogo('companyLogo', '#f8fafc');
+            const ctx = previewCanvas.getContext('2d');
+            const mainCanvas = document.getElementById('companyLogo');
+            ctx.drawImage(mainCanvas, 0, 0);
+            
+            const preview = document.getElementById('logoPreview');
+            preview.innerHTML = '';
+            preview.appendChild(previewCanvas);
+            
+            // White background preview
+            const previewCanvasWhite = document.createElement('canvas');
+            previewCanvasWhite.width = 300;
+            previewCanvasWhite.height = 300;
+            previewCanvasWhite.style.width = '300px';
+            previewCanvasWhite.style.height = '300px';
+            previewCanvasWhite.style.borderRadius = '50%';
+            
+            drawCompanyLogo('companyLogoWhite', '#ffffff');
+            const ctxWhite = previewCanvasWhite.getContext('2d');
+            const mainCanvasWhite = document.getElementById('companyLogoWhite');
+            ctxWhite.drawImage(mainCanvasWhite, 0, 0);
+            
+            const previewWhite = document.getElementById('logoPreviewWhite');
+            previewWhite.innerHTML = '';
+            previewWhite.appendChild(previewCanvasWhite);
+        }
+    </script>
+</body>
+</html>

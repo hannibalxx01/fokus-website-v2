@@ -121,7 +121,6 @@
             <!-- Minimalistic Navigation Menu -->
             <nav class="hidden md:flex space-x-8">
                 <a href="#how-it-works" class="text-sm text-gray-600 hover:text-black transition-colors">How it works</a>
-                <a href="#partners" class="text-sm text-gray-600 hover:text-black transition-colors">Features</a>
                 <a href="#testimonials" class="text-sm text-gray-600 hover:text-black transition-colors">Reviews</a>
                 <a href="#pricing" class="text-sm text-gray-600 hover:text-black transition-colors">Pricing</a>
             </nav>
@@ -143,7 +142,6 @@
         <div id="mobileMenu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-100">
             <nav class="flex flex-col space-y-3">
                 <a href="#how-it-works" class="text-sm text-gray-600 hover:text-black transition-colors py-2">How it works</a>
-                <a href="#partners" class="text-sm text-gray-600 hover:text-black transition-colors py-2">Features</a>
                 <a href="#testimonials" class="text-sm text-gray-600 hover:text-black transition-colors py-2">Reviews</a>
                 <a href="#pricing" class="text-sm text-gray-600 hover:text-black transition-colors py-2">Pricing</a>
                 <a href="#waitlist" class="text-sm bg-black text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors text-center">Join Waitlist</a>
@@ -177,32 +175,122 @@
         </div>
     </main>
 
-    <!-- Stats Section -->
-    <section class="py-12 sm:py-20 bg-gray-50 mobile-section-padding" id="insights">
-        <div class="max-w-5xl mx-auto mobile-padding px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center">
-                <div>
-                    <div class="text-3xl sm:text-4xl font-light text-black mb-2">1hr+</div>
-                    <div class="text-gray-500 text-sm sm:text-base mobile-text-lg">Daily time reclaimed</div>
+    <!-- Animated Stats Section -->
+    <section class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-blue-50 mobile-section-padding" id="insights">
+        <div class="max-w-6xl mx-auto mobile-padding px-4">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
+                <!-- Time Reclaimed -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                    <div class="text-4xl sm:text-5xl font-bold text-green-600 mb-3 counter" data-target="1.2">0</div>
+                    <div class="text-lg font-semibold text-black mb-4">Hours Reclaimed Daily</div>
+                    <div class="text-sm text-gray-600 leading-relaxed typing-text opacity-0" data-text="Time saved from mindless scrolling">
+                        
+                    </div>
                 </div>
-                <div>
-                    <div class="text-3xl sm:text-4xl font-light text-black mb-2">3x</div>
-                    <div class="text-gray-500 text-sm sm:text-base mobile-text-lg">Goal achievement</div>
+
+                <!-- Goal Achievement -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                    <div class="text-4xl sm:text-5xl font-bold text-blue-600 mb-3"><span class="counter" data-target="3">0</span>x</div>
+                    <div class="text-lg font-semibold text-black mb-4">Goal Achievement Rate</div>
+                    <div class="text-sm text-gray-600 leading-relaxed typing-text opacity-0" data-text="More goals reached with smart nudges">
+                        
+                    </div>
                 </div>
-                <div>
-                    <div class="text-3xl sm:text-4xl font-light text-black mb-2">94%</div>
-                    <div class="text-gray-500 text-sm sm:text-base mobile-text-lg">Feel more focused</div>
+
+                <!-- Focus Improvement -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                    <div class="text-4xl sm:text-5xl font-bold text-purple-600 mb-3"><span class="counter" data-target="94">0</span>%</div>
+                    <div class="text-lg font-semibold text-black mb-4">Feel More Focused</div>
+                    <div class="text-sm text-gray-600 leading-relaxed typing-text opacity-0" data-text="Users feel in control after 30 days">
+                        
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <script>
+        // Animate counters when they come into view
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 50; // Lower = faster animation
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / speed;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        if (target < 10) {
+                            counter.textContent = current.toFixed(1);
+                        } else {
+                            counter.textContent = Math.ceil(current);
+                        }
+                        setTimeout(updateCounter, 30);
+                    } else {
+                        if (target < 10) {
+                            counter.textContent = target.toFixed(1);
+                        } else {
+                            counter.textContent = target;
+                        }
+                    }
+                };
+                updateCounter();
+            });
+        }
+        
+        // Typing animation for explanation text
+        function animateTypingText() {
+            const typingElements = document.querySelectorAll('.typing-text');
+            
+            typingElements.forEach((element, index) => {
+                setTimeout(() => {
+                    const text = element.getAttribute('data-text');
+                    element.textContent = '';
+                    element.style.opacity = '1';
+                    
+                    let charIndex = 0;
+                    const typeChar = () => {
+                        if (charIndex < text.length) {
+                            element.textContent += text.charAt(charIndex);
+                            charIndex++;
+                            setTimeout(typeChar, 50);
+                        }
+                    };
+                    typeChar();
+                }, index * 800); // Stagger the animations
+            });
+        }
+        
+        // Trigger animation when stats section comes into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    setTimeout(animateTypingText, 1000); // Start typing after counters
+                    statsObserver.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        // Start observing when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsSection = document.getElementById('insights');
+            if (statsSection) {
+                statsObserver.observe(statsSection);
+            }
+        });
+    </script>
+
     <!-- Problem Section - Critical for Market Validation -->
     <section class="py-12 sm:py-20 bg-red-50 mobile-section-padding" id="problem">
         <div class="max-w-5xl mx-auto mobile-padding px-4 text-center">
-            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6 sm:mb-8 mobile-h2">Algorithms Are Winning</h3>
+            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6 sm:mb-8 mobile-h2">Your Time Is Being Hijacked</h3>
             <p class="text-base sm:text-lg text-gray-700 mb-12 sm:mb-16 max-w-3xl mx-auto mobile-text-lg">
-                Right now, AI is designed to steal your attention. Every scroll, every notification, every distraction is engineered to hijack your focus.
+                Every day, your attention gets pulled into endless scrolls, distracting notifications, and unproductive apps. Your goals get forgotten while your time disappears.
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mobile-gap mobile-grid-1">
@@ -407,16 +495,16 @@
                             <h4 class="text-2xl font-medium text-black">Track Your Progress</h4>
                         </div>
                         <p class="text-gray-700 text-lg leading-relaxed">
-                            Get detailed insights into your focus patterns, goal achievements, and digital wellbeing improvements. See your progress with beautiful charts and meaningful metrics.
+                            Get detailed insights into your focus patterns, goal achievements, and digital wellbeing improvements. Based on your goals, foKus suggests the perfect apps and tools to help you succeed.
                         </p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <div class="font-semibold mb-1">Wake-up Reports</div>
-                                <div class="text-sm text-gray-600">Daily summaries of your focus and achievements</div>
+                                <div class="font-semibold mb-1">Smart App Suggestions</div>
+                                <div class="text-sm text-gray-600">Partner apps recommended based on your specific goals</div>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <div class="font-semibold mb-1">Behavior Trends</div>
-                                <div class="text-sm text-gray-600">6-month patterns and improvement tracking</div>
+                                <div class="font-semibold mb-1">Progress Tracking</div>
+                                <div class="text-sm text-gray-600">Daily insights and long-term improvement patterns</div>
                             </div>
                         </div>
                     </div>
@@ -460,130 +548,6 @@
         </div>
     </section>
 
-    <!-- Partner Integration Section -->
-    <section class="py-12 sm:py-20 bg-blue-50 mobile-section-padding" id="partners">
-        <div class="max-w-6xl mx-auto mobile-padding px-4 sm:px-6 text-center">
-            <h3 class="text-3xl sm:text-4xl font-light text-black mb-6 mobile-h2">Partner Marketplace</h3>
-            <p class="text-base sm:text-xl text-gray-700 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed mobile-text-lg">
-                <strong>foKus connects you with the best tools.</strong> Smart suggestions at the right moment.
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <div class="bg-white p-8 rounded-xl border border-blue-100 shadow-sm">
-                    <div class="text-3xl mb-4">📚</div>
-                    <h4 class="text-xl font-semibold text-black mb-3">Learning Goals</h4>
-                    <p class="text-gray-600 mb-4">Smart app suggestions when you're focused.</p>
-                    <div class="text-sm text-blue-600 font-medium">Tool recommendations</div>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-blue-100 shadow-sm">
-                    <div class="text-3xl mb-4">💪</div>
-                    <h4 class="text-xl font-semibold text-black mb-3">Fitness Goals</h4>
-                    <p class="text-gray-600 mb-4">Personalized workout suggestions and tracking.</p>
-                    <div class="text-sm text-blue-600 font-medium">App integration</div>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-blue-100 shadow-sm">
-                    <div class="text-3xl mb-4">💼</div>
-                    <h4 class="text-xl font-semibold text-black mb-3">Career Goals</h4>
-                    <p class="text-gray-600 mb-4">Connect with courses and practice opportunities.</p>
-                    <div class="text-sm text-blue-600 font-medium">Professional network</div>
-                </div>
-            </div>
-
-            <!-- Partner Categories Section -->
-            <div class="bg-white rounded-2xl p-8 border border-blue-100 shadow-sm">
-                <h4 class="text-xl font-semibold text-black mb-2">Partner Ecosystem</h4>
-                <p class="text-sm text-gray-500 mb-8">Connect with the tools you already love</p>
-                
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 items-center">
-                    <!-- Language Learning -->
-                    <div class="flex flex-col items-center space-y-3 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-white font-bold text-xl">🗣️</span>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs font-semibold text-gray-900">Language Learning</div>
-                            <div class="text-xs text-gray-500 mt-1">Practice apps</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Mindfulness -->
-                    <div class="flex flex-col items-center space-y-3 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-white font-bold text-xl">🧘</span>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs font-semibold text-gray-900">Mindfulness</div>
-                            <div class="text-xs text-gray-500 mt-1">Meditation apps</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Online Courses -->
-                    <div class="flex flex-col items-center space-y-3 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-white font-bold text-xl">🎓</span>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs font-semibold text-gray-900">Online Courses</div>
-                            <div class="text-xs text-gray-500 mt-1">Learning platforms</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Productivity -->
-                    <div class="flex flex-col items-center space-y-3 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-white font-bold text-xl">📋</span>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs font-semibold text-gray-900">Productivity</div>
-                            <div class="text-xs text-gray-500 mt-1">Organization tools</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Fitness Tracking -->
-                    <div class="flex flex-col items-center space-y-3 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-white font-bold text-xl">💪</span>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs font-semibold text-gray-900">Fitness Tracking</div>
-                            <div class="text-xs text-gray-500 mt-1">Health apps</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Focus Tools -->
-                    <div class="flex flex-col items-center space-y-3 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-white font-bold text-xl">🎯</span>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs font-semibold text-gray-900">Focus Tools</div>
-                            <div class="text-xs text-gray-500 mt-1">Concentration aids</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-8 pt-6 border-t border-gray-100">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-                        <div class="space-y-2">
-                            <div class="text-2xl">🎯</div>
-                            <div class="text-sm font-semibold text-gray-900">Smart Suggestions</div>
-                            <div class="text-xs text-gray-600">foKus recommends the right tool at the perfect moment</div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-2xl">🔗</div>
-                            <div class="text-sm font-semibold text-gray-900">Seamless Integration</div>
-                            <div class="text-xs text-gray-600">Connect your existing apps for a unified experience</div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-2xl">📈</div>
-                            <div class="text-sm font-semibold text-gray-900">Better Results</div>
-                            <div class="text-xs text-gray-600">Achieve goals faster with contextual tool recommendations</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Social Proof Section -->
     <section class="py-12 sm:py-20 bg-white mobile-section-padding" id="testimonials">
@@ -711,12 +675,12 @@
                     </button>
                 </div>
 
-                <!-- Premium Plan -->
+                <!-- Enterprise Plan -->
                 <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
                     <div class="text-center">
-                        <h4 class="text-2xl font-bold text-black mb-2">Premium</h4>
+                        <h4 class="text-2xl font-bold text-black mb-2">Enterprise</h4>
                         <div class="text-4xl font-light text-gray-900 mb-4">$9.99<span class="text-lg">/mo</span></div>
-                        <p class="text-gray-600 mb-6">For maximum achievement</p>
+                        <p class="text-gray-600 mb-6">Team solution for organizations</p>
                     </div>
                     <ul class="space-y-4 mb-8">
                         <li class="flex items-center">
@@ -751,12 +715,11 @@
                         </li>
                     </ul>
                     <button class="w-full py-3 px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-colors">
-                        Choose Premium
+                        Choose Enterprise
                     </button>
                 </div>
             </div>
             
-            <p class="text-sm text-gray-500 mt-8">⚡ Early adopters get 50% off their first year on any paid plan</p>
         </div>
     </section>
 

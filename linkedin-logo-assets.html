@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>foKus LinkedIn Logo Assets</title>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            padding: 2rem; 
+            background: #f9fafb; 
+            line-height: 1.6;
+        }
+        .asset { 
+            background: white; 
+            padding: 2rem; 
+            margin: 2rem 0; 
+            border-radius: 12px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        }
+        .logo-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 2rem; 
+            margin: 2rem 0;
+        }
+        .logo-item { 
+            text-align: center; 
+            padding: 2rem; 
+            background: #f8fafc; 
+            border-radius: 12px; 
+            border: 2px dashed #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        .logo-item:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+        .logo-preview {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .white-bg { background: white; border: 1px solid #e5e7eb; }
+        .dark-bg { background: #1f2937; }
+        .linkedin-bg { background: #0077b5; }
+        h1, h2 { color: #1f2937; }
+        .download-btn {
+            background: #6366f1;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+        .download-btn:hover {
+            background: #4f46e5;
+        }
+        .specs {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>foKus LinkedIn Logo Assets</h1>
+    <p>Professional logo variations optimized for LinkedIn company pages and business use.</p>
+
+    <!-- LinkedIn Specific Sizes -->
+    <div class="asset">
+        <h2>LinkedIn Company Page Logos</h2>
+        <div class="logo-grid">
+            
+            <!-- Company Logo (300x300) -->
+            <div class="logo-item">
+                <h3>Company Profile Logo</h3>
+                <div class="specs">300×300px • Square format</div>
+                <div class="logo-preview white-bg">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3V6M3 3H6M21 3H18M21 3V6M3 21V18M3 21H6M21 21H18M21 21V18" 
+                              stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 7C9 7 7 9 7 12C7 15 9 17 12 17C15 17 17 15 17 12C17 9 15 7 12 7Z" 
+                              stroke="currentColor" stroke-width="1.5" fill="none"/>
+                        <path d="M12 7V17" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                </div>
+                <canvas id="logo300" width="300" height="300" style="display: none;"></canvas>
+                <button class="download-btn" onclick="downloadLogo('logo300', 'fokus-linkedin-profile-300x300.png')">
+                    Download PNG
+                </button>
+                <div class="specs">For LinkedIn company profile picture</div>
+            </div>
+
+            <!-- Cover Photo Logo (1128x191) -->
+            <div class="logo-item">
+                <h3>Cover Photo Version</h3>
+                <div class="specs">1128×191px • Horizontal banner</div>
+                <div class="logo-preview linkedin-bg">
+                    <div style="display: flex; align-items: center; justify-content: center; padding: 1rem; color: white;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin-right: 12px;">
+                            <path d="M3 3V6M3 3H6M21 3H18M21 3V6M3 21V18M3 21H6M21 21H18M21 21V18" 
+                                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 7C9 7 7 9 7 12C7 15 9 17 12 17C15 17 17 15 17 12C17 9 15 7 12 7Z" 
+                                  stroke="currentColor" stroke-width="1.5" fill="none"/>
+                            <path d="M12 7V17" stroke="currentColor" stroke-width="1"/>
+                        </svg>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: bold;">foKus</div>
+                            <div style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.1em;">Your attention, your choice</div>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="cover1128" width="1128" height="191" style="display: none;"></canvas>
+                <button class="download-btn" onclick="downloadCover('cover1128', 'fokus-linkedin-cover-1128x191.png')">
+                    Download PNG
+                </button>
+                <div class="specs">For LinkedIn company cover photo</div>
+            </div>
+
+            <!-- Post Image Logo (1200x628) -->
+            <div class="logo-item">
+                <h3>Post/Share Image</h3>
+                <div class="specs">1200×628px • Social media posts</div>
+                <div class="logo-preview white-bg" style="width: 200px; height: 105px; display: flex; align-items: center; justify-content: center; border: 1px solid #e5e7eb;">
+                    <div style="display: flex; align-items: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                            <path d="M3 3V6M3 3H6M21 3H18M21 3V6M3 21V18M3 21H6M21 21H18M21 21V18" 
+                                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 7C9 7 7 9 7 12C7 15 9 17 12 17C15 17 17 15 17 12C17 9 15 7 12 7Z" 
+                                  stroke="currentColor" stroke-width="1.5" fill="none"/>
+                            <path d="M12 7V17" stroke="currentColor" stroke-width="1"/>
+                        </svg>
+                        <span style="font-weight: bold;">foKus</span>
+                    </div>
+                </div>
+                <canvas id="post1200" width="1200" height="628" style="display: none;"></canvas>
+                <button class="download-btn" onclick="downloadPost('post1200', 'fokus-linkedin-post-1200x628.png')">
+                    Download PNG
+                </button>
+                <div class="specs">For LinkedIn post images and shares</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- High Resolution Versions -->
+    <div class="asset">
+        <h2>High Resolution Versions</h2>
+        <div class="logo-grid">
+            
+            <!-- SVG Original -->
+            <div class="logo-item">
+                <h3>Vector Logo (SVG)</h3>
+                <div class="specs">Scalable • Perfect quality</div>
+                <div class="logo-preview white-bg">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3V6M3 3H6M21 3H18M21 3V6M3 21V18M3 21H6M21 21H18M21 21V18" 
+                              stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 7C9 7 7 9 7 12C7 15 9 17 12 17C15 17 17 15 17 12C17 9 15 7 12 7Z" 
+                              stroke="currentColor" stroke-width="1.5" fill="none"/>
+                        <path d="M12 7V17" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                </div>
+                <a href="fokus-logo.svg" download="fokus-logo-vector.svg" class="download-btn" style="text-decoration: none; display: inline-block;">
+                    Download SVG
+                </a>
+                <div class="specs">Use for print and scalable graphics</div>
+            </div>
+
+            <!-- High-Res PNG (1024x1024) -->
+            <div class="logo-item">
+                <h3>High-Res Logo</h3>
+                <div class="specs">1024×1024px • Print quality</div>
+                <div class="logo-preview white-bg">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3V6M3 3H6M21 3H18M21 3V6M3 21V18M3 21H6M21 21H18M21 21V18" 
+                              stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 7C9 7 7 9 7 12C7 15 9 17 12 17C15 17 17 15 17 12C17 9 15 7 12 7Z" 
+                              stroke="currentColor" stroke-width="1.5" fill="none"/>
+                        <path d="M12 7V17" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                </div>
+                <canvas id="highres1024" width="1024" height="1024" style="display: none;"></canvas>
+                <button class="download-btn" onclick="downloadLogo('highres1024', 'fokus-logo-1024x1024.png')">
+                    Download PNG
+                </button>
+                <div class="specs">For high-quality applications</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Usage Guidelines -->
+    <div class="asset">
+        <h2>LinkedIn Usage Guidelines</h2>
+        <ul>
+            <li><strong>Company Profile Logo</strong>: Use 300×300px square version</li>
+            <li><strong>Cover Photo</strong>: Use 1128×191px horizontal banner with logo + text</li>
+            <li><strong>Post Images</strong>: Use 1200×628px for shared content</li>
+            <li><strong>Minimum Size</strong>: Logo should never be smaller than 24px in height</li>
+            <li><strong>Background</strong>: Logo works best on white or very light backgrounds</li>
+            <li><strong>Clear Space</strong>: Always maintain space around logo equal to the logo's height</li>
+        </ul>
+    </div>
+
+    <script>
+        // Function to draw logo on canvas and download
+        function downloadLogo(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw logo (scaled to fit)
+            const scale = size / 24; // Scale from 24px viewBox to canvas size
+            const center = size / 2;
+            
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1.5 * scale;
+            ctx.lineCap = 'round';
+            ctx.fillStyle = 'none';
+            
+            // Draw corner brackets
+            drawPath(ctx, [
+                [3*scale, 3*scale], [3*scale, 6*scale],
+                [3*scale, 3*scale], [6*scale, 3*scale],
+                [21*scale, 3*scale], [18*scale, 3*scale],
+                [21*scale, 3*scale], [21*scale, 6*scale],
+                [3*scale, 21*scale], [3*scale, 18*scale],
+                [3*scale, 21*scale], [6*scale, 21*scale],
+                [21*scale, 21*scale], [18*scale, 21*scale],
+                [21*scale, 21*scale], [21*scale, 18*scale]
+            ]);
+            
+            // Draw circle
+            ctx.beginPath();
+            ctx.arc(12*scale, 12*scale, 5*scale, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Draw center line
+            ctx.beginPath();
+            ctx.moveTo(12*scale, 7*scale);
+            ctx.lineTo(12*scale, 17*scale);
+            ctx.stroke();
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadCover(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // LinkedIn blue background
+            ctx.fillStyle = '#0077b5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Center content
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Draw logo (white)
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            
+            const logoSize = 40;
+            const logoX = centerX - 100;
+            const logoY = centerY;
+            
+            // Draw simplified logo
+            ctx.beginPath();
+            ctx.arc(logoX, logoY, logoSize/2, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(logoX, logoY - logoSize/2);
+            ctx.lineTo(logoX, logoY + logoSize/2);
+            ctx.stroke();
+            
+            // Draw text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 48px Inter, Arial, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('foKus', logoX + 60, logoY - 5);
+            
+            ctx.font = '18px Inter, Arial, sans-serif';
+            ctx.fillText('YOUR ATTENTION, YOUR CHOICE', logoX + 60, logoY + 25);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadPost(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // White background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Center logo and text
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Draw logo
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            
+            const logoSize = 60;
+            
+            // Draw circle
+            ctx.beginPath();
+            ctx.arc(centerX - 50, centerY, logoSize/2, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Draw center line
+            ctx.beginPath();
+            ctx.moveTo(centerX - 50, centerY - logoSize/2);
+            ctx.lineTo(centerX - 50, centerY + logoSize/2);
+            ctx.stroke();
+            
+            // Draw text
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 72px Inter, Arial, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('foKus', centerX + 20, centerY + 15);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function drawPath(ctx, points) {
+            for(let i = 0; i < points.length; i += 2) {
+                ctx.beginPath();
+                ctx.moveTo(points[i][0], points[i][1]);
+                ctx.lineTo(points[i+1][0], points[i+1][1]);
+                ctx.stroke();
+            }
+        }
+    </script>
+</body>
+</html>
