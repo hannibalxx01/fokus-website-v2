@@ -242,8 +242,8 @@ async function handleEmailSubmit(e) {
 }
 
 // Google Sheets Integration
-// Connected to Google Apps Script for foKus Waitlist - Fresh deployment v2
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0ehc_aM91ubKqizAMF6RUrQxgi6C9JoCgZwk5l6DK0oPz0vJGCJOVwxVBLhcy1PXv/exec';
+// Connected to Google Apps Script for foKus Waitlist - Fresh deployment v3 with fixed survey handling
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwB3N6jFFNcgVPM2n_1Jfz3rLBVo0KUyinnM52e5sPNtj9V-yZNUH9HC16oStdlqNmj/exec';
 
 // Store email in Google Sheets
 async function storeEmail(email) {
