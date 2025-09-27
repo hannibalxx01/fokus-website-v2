@@ -1223,25 +1223,39 @@
             if (validateStep(currentSurveyStep)) {
                 const surveyData = collectSurveyData();
                 
-                // Store survey data with email
-                const storedEmails = JSON.parse(localStorage.getItem('fokusWaitlist') || '[]');
-                if (storedEmails.length > 0) {
-                    const lastEntry = storedEmails[storedEmails.length - 1];
-                    lastEntry.surveyData = surveyData;
-                    localStorage.setItem('fokusWaitlist', JSON.stringify(storedEmails));
-                }
-
-                // Show success and close modal
-                closeUserProfileModal();
-                showMessage('Thanks for the detailed feedback! This will help us build the perfect focus companion for you.', 'success');
+                // Show loading state
+                const submitBtn = document.getElementById('submitBtn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.disabled = true;
                 
-                // Track survey completion
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'survey_complete', {
-                        'event_category': 'engagement',
-                        'event_label': 'user_profile_survey',
-                        'value': 1
-                    });
+                try {
+                    // Store survey data in Google Sheets
+                    if (window.currentUserEmail && typeof window.storeSurveyData === 'function') {
+                        await window.storeSurveyData(window.currentUserEmail, surveyData);
+                    }
+                    
+                    // Show success and close modal
+                    closeUserProfileModal();
+                    showMessage('Thanks for the detailed feedback! This will help us build the perfect focus companion for you.', 'success');
+                    
+                    // Track survey completion
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'survey_complete', {
+                            'event_category': 'engagement',
+                            'event_label': 'user_profile_survey',
+                            'value': 1
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error submitting survey:', error);
+                    // Still close modal and show success - survey is optional
+                    closeUserProfileModal();
+                    showMessage('Thanks for the detailed feedback! This will help us build the perfect focus companion for you.', 'success');
+                } finally {
+                    // Reset button
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                 }
             } else {
                 alert('Please select at least one option before submitting.');

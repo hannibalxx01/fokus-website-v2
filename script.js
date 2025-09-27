@@ -1,3 +1,6 @@
+// Global variable to store current user email for survey
+let currentUserEmail = null;
+
 // Premium website functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Hide loading screen
@@ -198,14 +201,21 @@ async function handleEmailSubmit(e) {
     submitButton.disabled = true;
     
     try {
-        // Store email locally (you can replace this with your backend API)
+        // Store email in Google Sheets
         await storeEmail(email);
+        
+        // Store email for survey submission
+        currentUserEmail = email;
+        window.currentUserEmail = email;
         
         // Clear form
         emailInput.value = '';
         
         // Track conversion (optional - integrate with your analytics)
         trackEmailSignup(email);
+        
+        // Show success message
+        showMessage('🎉 Welcome to the foKus waitlist! Please complete our quick survey.', 'success');
         
         // Show user profile modal after successful email submission
         console.log('Email stored successfully, showing modal in 1 second...'); // Debug log
@@ -231,52 +241,70 @@ async function handleEmailSubmit(e) {
     }
 }
 
-// Store email (replace with your backend endpoint)
+// Google Sheets Integration
+// Connected to Google Apps Script for foKus Waitlist
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxminCfWF4HYi7xZ_BcWcL15K9AfQeLU4HoJk9QZmevQQTrX0g6jb2bMj4lp-h87tRv/exec';
+
+// Store email in Google Sheets
 async function storeEmail(email) {
-    // For now, store in localStorage for demo purposes
-    // Replace this with your actual backend API call
-    
-    const storedEmails = JSON.parse(localStorage.getItem('fokusWaitlist') || '[]');
-    const timestamp = new Date().toISOString();
-    
-    // Check if email already exists
-    if (storedEmails.some(entry => entry.email === email)) {
-        throw new Error('Email already registered');
+    try {
+        // Send email signup to Google Sheets
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'email_signup',
+                email,
+                timestamp: new Date().toISOString(),
+                source: window.location.pathname,
+                referrer: document.referrer
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to store email');
+        }
+        
+        // Simulate delay for better UX
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        return { success: true };
+    } catch (error) {
+        console.error('Error storing email:', error);
+        throw error;
     }
-    
-    storedEmails.push({
-        email,
-        timestamp,
-        source: window.location.pathname,
-        referrer: document.referrer
-    });
-    
-    localStorage.setItem('fokusWaitlist', JSON.stringify(storedEmails));
-    
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Here you would typically make an API call to your backend:
-    /*
-    const response = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email,
-            timestamp,
-            source: window.location.pathname,
-            referrer: document.referrer
-        })
-    });
-    
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
+}
+
+// Store survey data in Google Sheets
+async function storeSurveyData(email, surveyData) {
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'survey_complete',
+                email,
+                userTypes: surveyData.userTypes || [],
+                painPoints: surveyData.painPoints || [],
+                usageContext: surveyData.usageContext || [],
+                comments: surveyData.comments || ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to store survey data');
+        }
+        
+        return { success: true };
+    } catch (error) {
+        console.error('Error storing survey data:', error);
+        // Don't throw error for survey - email signup already succeeded
+        return { success: false };
     }
-    
-    return await response.json();
-    */
 }
 
 // Email validation
@@ -411,6 +439,16 @@ function exportEmails() {
     link.click();
     document.body.removeChild(link);
 }
+
+// Make functions globally accessible
+window.currentUserEmail = null;
+window.storeSurveyData = storeSurveyData;
+
+// Update currentUserEmail globally when it changes
+window.setCurrentUserEmail = function(email) {
+    window.currentUserEmail = email;
+    currentUserEmail = email;
+};
 
 // Make admin functions globally accessible in development
 window.viewStoredEmails = viewStoredEmails;
