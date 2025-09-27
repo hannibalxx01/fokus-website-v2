@@ -248,6 +248,9 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0ehc_aM91ub
 // Store email in Google Sheets
 async function storeEmail(email) {
     try {
+        console.log('Attempting to store email:', email);
+        console.log('Using URL:', GOOGLE_SCRIPT_URL);
+        
         // Send email signup to Google Sheets
         const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
@@ -263,8 +266,18 @@ async function storeEmail(email) {
             })
         });
         
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
+        
         if (!response.ok) {
-            throw new Error('Failed to store email');
+            throw new Error(`HTTP ${response.status}: ${responseText}`);
+        }
+        
+        if (responseText.includes('Error:')) {
+            throw new Error(responseText);
         }
         
         // Simulate delay for better UX
@@ -272,7 +285,7 @@ async function storeEmail(email) {
         
         return { success: true };
     } catch (error) {
-        console.error('Error storing email:', error);
+        console.error('Detailed error storing email:', error);
         throw error;
     }
 }
