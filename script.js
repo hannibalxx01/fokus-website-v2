@@ -285,24 +285,26 @@ async function storeEmail(email) {
 // Store survey data in Google Sheets
 async function storeSurveyData(email, surveyData) {
     try {
+        console.log('Attempting to store survey data for:', email);
+        console.log('Survey data:', surveyData);
+        
+        // Use FormData to avoid CORS preflight issues
+        const formData = new FormData();
+        formData.append('type', 'survey_complete');
+        formData.append('email', email);
+        formData.append('userTypes', JSON.stringify(surveyData.userTypes || []));
+        formData.append('painPoints', JSON.stringify(surveyData.painPoints || []));
+        formData.append('usageContext', JSON.stringify(surveyData.usageContext || []));
+        formData.append('comments', surveyData.comments || '');
+        
+        // Send survey data to Google Sheets using no-cors mode
         const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                type: 'survey_complete',
-                email,
-                userTypes: surveyData.userTypes || [],
-                painPoints: surveyData.painPoints || [],
-                usageContext: surveyData.usageContext || [],
-                comments: surveyData.comments || ''
-            })
+            mode: 'no-cors',
+            body: formData
         });
         
-        if (!response.ok) {
-            throw new Error('Failed to store survey data');
-        }
+        console.log('Survey submission completed');
         
         return { success: true };
     } catch (error) {
