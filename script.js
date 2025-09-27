@@ -242,7 +242,7 @@ async function handleEmailSubmit(e) {
 }
 
 // Google Sheets Integration
-// Connected to Google Apps Script for foKus Waitlist
+// Connected to Google Apps Script for foKus Waitlist - Updated deployment
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxminCfWF4HYi7xZ_BcWcL15K9AfQeLU4HoJk9QZmevQQTrX0g6jb2bMj4lp-h87tRv/exec';
 
 // Store email in Google Sheets
