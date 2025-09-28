@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', handleEmailSubmit);
     });
     
+    // Initialize tracking systems
+    initAdvancedTracking();
+    
     // Initialize scroll animations
     initScrollAnimations();
     
@@ -28,6 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize premium interactions
     initPremiumInteractions();
+    
+    // Initialize pricing buttons
+    initPricingButtons();
+    
+    // Initialize modals
+    initModals();
 });
 
 // Initialize scroll-triggered animations
@@ -201,8 +210,8 @@ async function handleEmailSubmit(e) {
     submitButton.disabled = true;
     
     try {
-        // Store email in Google Sheets
-        await storeEmail(email);
+        // Store email in Google Sheets with plan tracking
+        await storeEmailWithPlan(email);
         
         // Store email for survey submission
         currentUserEmail = email;
@@ -460,3 +469,398 @@ window.setCurrentUserEmail = function(email) {
 // Make admin functions globally accessible in development
 window.viewStoredEmails = viewStoredEmails;
 window.exportEmails = exportEmails;
+
+// =============================================================================
+// ADVANCED TRACKING SYSTEM
+// =============================================================================
+
+// Initialize comprehensive tracking
+function initAdvancedTracking() {
+    trackPageLoad();
+    initSectionTracking();
+    initScrollDepthTracking();
+    initTimeTracking();
+    initOutboundLinkTracking();
+}
+
+// Track page load with timing
+function trackPageLoad() {
+    window.addEventListener('load', () => {
+        const loadTime = Math.round(performance.now());
+        trackEvent('page_load', 'performance', 'load_time', loadTime);
+        
+        // Track user device info
+        const deviceInfo = {
+            screen_resolution: `${screen.width}x${screen.height}`,
+            viewport: `${window.innerWidth}x${window.innerHeight}`,
+            device_type: window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop',
+            user_agent: navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
+        };
+        
+        Object.entries(deviceInfo).forEach(([key, value]) => {
+            trackEvent('device_info', 'technical', key, value);
+        });
+    });
+}
+
+// Track section visibility
+function initSectionTracking() {
+    const sections = ['hero', 'insights', 'problem', 'how-it-works', 'testimonials', 'pricing', 'waitlist'];
+    const sectionTimes = {};
+    
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const sectionName = entry.target.id;
+            
+            if (entry.isIntersecting) {
+                sectionTimes[sectionName] = Date.now();
+                trackEvent('section_view', 'engagement', sectionName, Math.round(entry.intersectionRatio * 100));
+            } else if (sectionTimes[sectionName]) {
+                const timeSpent = Math.round((Date.now() - sectionTimes[sectionName]) / 1000);
+                trackEvent('section_time', 'engagement', sectionName, timeSpent);
+                delete sectionTimes[sectionName];
+            }
+        });
+    }, { threshold: [0.1, 0.5, 0.9] });
+
+    sections.forEach(sectionId => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            sectionObserver.observe(element);
+        }
+    });
+}
+
+// Track scroll depth
+function initScrollDepthTracking() {
+    const scrollMilestones = [25, 50, 75, 90, 100];
+    const reached = new Set();
+    
+    let ticking = false;
+    
+    function trackScrollDepth() {
+        const scrollPercent = Math.round(
+            (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+        );
+        
+        scrollMilestones.forEach(milestone => {
+            if (scrollPercent >= milestone && !reached.has(milestone)) {
+                reached.add(milestone);
+                trackEvent('scroll_depth', 'engagement', `${milestone}_percent`, scrollPercent);
+            }
+        });
+        
+        ticking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(trackScrollDepth);
+            ticking = true;
+        }
+    });
+}
+
+// Track time on page
+function initTimeTracking() {
+    const startTime = Date.now();
+    let heartbeatInterval;
+    
+    // Send heartbeat every 30 seconds
+    heartbeatInterval = setInterval(() => {
+        const timeSpent = Math.round((Date.now() - startTime) / 1000);
+        trackEvent('time_on_page', 'engagement', 'heartbeat', timeSpent);
+    }, 30000);
+    
+    // Track when user leaves
+    window.addEventListener('beforeunload', () => {
+        clearInterval(heartbeatInterval);
+        const totalTime = Math.round((Date.now() - startTime) / 1000);
+        trackEvent('session_end', 'engagement', 'total_time', totalTime);
+    });
+    
+    // Track when user becomes inactive
+    let lastActivity = Date.now();
+    let isActive = true;
+    
+    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+        document.addEventListener(event, () => {
+            lastActivity = Date.now();
+            if (!isActive) {
+                isActive = true;
+                trackEvent('user_active', 'engagement', 'resumed');
+            }
+        });
+    });
+    
+    // Check for inactivity every 10 seconds
+    setInterval(() => {
+        if (Date.now() - lastActivity > 30000 && isActive) {
+            isActive = false;
+            trackEvent('user_inactive', 'engagement', 'idle');
+        }
+    }, 10000);
+}
+
+// Track outbound links
+function initOutboundLinkTracking() {
+    document.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A' && e.target.href) {
+            const url = new URL(e.target.href);
+            if (url.hostname !== window.location.hostname) {
+                trackEvent('outbound_click', 'navigation', url.hostname, e.target.href);
+            }
+        }
+    });
+}
+
+// =============================================================================
+// PRICING BUTTONS & MODALS
+// =============================================================================
+
+function initPricingButtons() {
+    // Free plan button
+    document.querySelector('[data-plan="free"]')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const planData = e.target.dataset;
+        
+        trackEvent('plan_interest', 'conversion', 'free_plan', 0);
+        trackEvent('cta_click', 'engagement', 'get_started_free');
+        
+        // Store plan preference
+        localStorage.setItem('selectedPlan', 'free');
+        localStorage.setItem('planPrice', '0');
+        
+        // Scroll to waitlist with smooth animation
+        document.getElementById('waitlist').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
+        });
+        
+        // Highlight the email form briefly
+        setTimeout(() => {
+            const emailForm = document.querySelector('.premium-form');
+            if (emailForm) {
+                emailForm.style.transform = 'scale(1.02)';
+                emailForm.style.boxShadow = '0 0 30px rgba(102, 126, 234, 0.3)';
+                setTimeout(() => {
+                    emailForm.style.transform = 'scale(1)';
+                    emailForm.style.boxShadow = '';
+                }, 1000);
+            }
+        }, 500);
+    });
+    
+    // Pro plan button
+    document.querySelector('[data-plan="pro"]')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const planData = e.target.dataset;
+        
+        trackEvent('plan_interest', 'conversion', 'pro_plan', 4.99);
+        trackEvent('cta_click', 'engagement', 'start_free_trial');
+        
+        localStorage.setItem('selectedPlan', 'pro');
+        localStorage.setItem('planPrice', '4.99');
+        
+        showComingSoonModal();
+    });
+    
+    // Enterprise plan button
+    document.querySelector('[data-plan="enterprise"]')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const planData = e.target.dataset;
+        
+        trackEvent('plan_interest', 'conversion', 'enterprise_plan');
+        trackEvent('cta_click', 'engagement', 'contact_sales');
+        
+        localStorage.setItem('selectedPlan', 'enterprise');
+        localStorage.setItem('planPrice', 'custom');
+        
+        showContactModal();
+    });
+}
+
+function initModals() {
+    // Coming Soon Modal
+    const comingSoonModal = document.getElementById('comingSoonModal');
+    const closeComingSoonBtn = document.getElementById('closeComingSoonModal');
+    
+    closeComingSoonBtn?.addEventListener('click', hideComingSoonModal);
+    comingSoonModal?.addEventListener('click', (e) => {
+        if (e.target === comingSoonModal) hideComingSoonModal();
+    });
+    
+    // Pro waitlist form
+    document.getElementById('proWaitlistForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('proEmail').value;
+        
+        trackEvent('pro_waitlist_signup', 'conversion', 'email_submitted', email);
+        
+        try {
+            await storeSpecialEmail(email, 'pro_waitlist');
+            hideComingSoonModal();
+            showMessage('🎉 You\'re on the Pro waitlist! We\'ll notify you with early access.', 'success');
+        } catch (error) {
+            showMessage('Something went wrong. Please try again.', 'error');
+        }
+    });
+    
+    // Contact Modal
+    const contactModal = document.getElementById('contactModal');
+    const closeContactBtn = document.getElementById('closeContactModal');
+    
+    closeContactBtn?.addEventListener('click', hideContactModal);
+    contactModal?.addEventListener('click', (e) => {
+        if (e.target === contactModal) hideContactModal();
+    });
+    
+    // Enterprise contact form
+    document.getElementById('enterpriseContactForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const contactData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('enterpriseEmail').value,
+            company: document.getElementById('company').value,
+            teamSize: document.getElementById('teamSize').value,
+            message: document.getElementById('message').value
+        };
+        
+        trackEvent('enterprise_contact', 'conversion', 'form_submitted', contactData.teamSize);
+        
+        try {
+            await storeEnterpriseContact(contactData);
+            hideContactModal();
+            showMessage('🎉 Thanks! We\'ll contact you within 24 hours to discuss your needs.', 'success');
+        } catch (error) {
+            showMessage('Something went wrong. Please try again.', 'error');
+        }
+    });
+}
+
+// Modal show/hide functions
+function showComingSoonModal() {
+    document.getElementById('comingSoonModal').classList.remove('hidden');
+    trackEvent('modal_view', 'engagement', 'pro_coming_soon');
+}
+
+function hideComingSoonModal() {
+    document.getElementById('comingSoonModal').classList.add('hidden');
+    document.getElementById('proEmail').value = '';
+}
+
+function showContactModal() {
+    document.getElementById('contactModal').classList.remove('hidden');
+    trackEvent('modal_view', 'engagement', 'enterprise_contact');
+}
+
+function hideContactModal() {
+    document.getElementById('contactModal').classList.add('hidden');
+    document.getElementById('enterpriseContactForm').reset();
+}
+
+// =============================================================================
+// ENHANCED EMAIL STORAGE WITH PLAN TRACKING
+// =============================================================================
+
+// Store special emails (Pro waitlist, Enterprise contacts)
+async function storeSpecialEmail(email, type) {
+    try {
+        const formData = new FormData();
+        formData.append('type', 'special_signup');
+        formData.append('email', email);
+        formData.append('signupType', type);
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('source', window.location.pathname);
+        formData.append('referrer', document.referrer);
+        formData.append('selectedPlan', localStorage.getItem('selectedPlan') || 'unknown');
+        
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: formData
+        });
+        
+        console.log('Special email stored:', type, email);
+        return { success: true };
+    } catch (error) {
+        console.error('Error storing special email:', error);
+        throw error;
+    }
+}
+
+// Store enterprise contact info
+async function storeEnterpriseContact(contactData) {
+    try {
+        const formData = new FormData();
+        formData.append('type', 'enterprise_contact');
+        formData.append('firstName', contactData.firstName);
+        formData.append('lastName', contactData.lastName);
+        formData.append('email', contactData.email);
+        formData.append('company', contactData.company);
+        formData.append('teamSize', contactData.teamSize);
+        formData.append('message', contactData.message);
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('source', window.location.pathname);
+        formData.append('referrer', document.referrer);
+        
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: formData
+        });
+        
+        console.log('Enterprise contact stored:', contactData.email);
+        return { success: true };
+    } catch (error) {
+        console.error('Error storing enterprise contact:', error);
+        throw error;
+    }
+}
+
+// Enhanced email storage with plan preference
+async function storeEmailWithPlan(email) {
+    try {
+        const formData = new FormData();
+        formData.append('type', 'email_signup');
+        formData.append('email', email);
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('source', window.location.pathname);
+        formData.append('referrer', document.referrer);
+        formData.append('selectedPlan', localStorage.getItem('selectedPlan') || 'unknown');
+        formData.append('planPrice', localStorage.getItem('planPrice') || 'unknown');
+        formData.append('userAgent', navigator.userAgent);
+        formData.append('viewportSize', `${window.innerWidth}x${window.innerHeight}`);
+        
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: formData
+        });
+        
+        console.log('Email stored with plan preference');
+        return { success: true };
+    } catch (error) {
+        console.error('Error storing email with plan:', error);
+        throw error;
+    }
+}
+
+// Helper function for tracking events
+function trackEvent(action, category, label, value) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', action, {
+            event_category: category,
+            event_label: label,
+            value: value,
+            custom_parameter_1: localStorage.getItem('selectedPlan'),
+            custom_parameter_2: window.location.pathname
+        });
+    }
+    
+    // Also log to console for debugging
+    console.log('📊 Event:', action, { category, label, value });
+}

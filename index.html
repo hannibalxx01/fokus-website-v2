@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>foKus - AI Focus Guardian</title>
     <meta name="description" content="AI that protects your attention and transforms goals into reality.">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        // TODO: Replace G-XXXXXXXXXX with your actual Google Analytics ID
+        gtag('config', 'G-XXXXXXXXXX', {
+            page_title: 'foKus - AI Focus Guardian',
+            page_location: window.location.href,
+            content_group1: 'Landing Page'
+        });
+        
+        // Custom event helper
+        window.trackEvent = function(action, category, label, value) {
+            gtag('event', action, {
+                event_category: category,
+                event_label: label,
+                value: value
+            });
+        };
+    </script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter Font -->
@@ -771,7 +796,7 @@
                         </li>
                     </ul>
                     <div class="mt-auto">
-                        <button class="w-full py-4 px-6 bg-green-500 text-white rounded-xl font-semibold text-lg hover:bg-green-600 transition-colors shadow-lg">
+                        <button data-plan="free" data-price="0" class="w-full py-4 px-6 bg-green-500 text-white rounded-xl font-semibold text-lg hover:bg-green-600 transition-colors shadow-lg">
                             Get Started Free
                         </button>
                         <p class="text-xs text-gray-500 mt-3 text-center">No credit card required • No time limits</p>
@@ -839,7 +864,7 @@
                         </li>
                     </ul>
                     <div class="mt-auto">
-                        <button class="w-full py-4 px-6 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg">
+                        <button data-plan="pro" data-price="4.99" class="w-full py-4 px-6 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg">
                             Start Free Trial
                         </button>
                         <p class="text-xs text-blue-200 mt-3 text-center">Cancel anytime • No commitment</p>
@@ -910,7 +935,7 @@
                         </li>
                     </ul>
                     <div class="mt-auto">
-                        <button class="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold text-lg hover:from-purple-600 hover:to-pink-600 transition-colors shadow-lg">
+                        <button data-plan="enterprise" data-price="custom" class="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold text-lg hover:from-purple-600 hover:to-pink-600 transition-colors shadow-lg">
                             Contact Sales Team
                         </button>
                         <p class="text-xs text-gray-500 mt-3 text-center">Custom pricing • Implementation support</p>
@@ -1481,5 +1506,86 @@
         window.showUserProfileModal = showUserProfileModal;
 
     </script>
+
+    <!-- Coming Soon Modal for Pro Plan -->
+    <div id="comingSoonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 relative">
+            <button id="closeComingSoonModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Pro Plan Coming Soon!</h3>
+                <p class="text-gray-600 mb-6">We're putting the finishing touches on our Pro features. Be the first to know when it launches!</p>
+                
+                <form id="proWaitlistForm" class="space-y-4">
+                    <input type="email" id="proEmail" placeholder="your@email.com" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        Notify Me When Available
+                    </button>
+                </form>
+                
+                <p class="text-xs text-gray-500 mt-4">Get early access + 50% off first month</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal for Enterprise -->
+    <div id="contactModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-8 relative">
+            <button id="closeContactModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Let's Talk Enterprise</h3>
+                <p class="text-gray-600">Tell us about your team's needs and we'll create a custom solution.</p>
+            </div>
+            
+            <form id="enterpriseContactForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="firstName" placeholder="First Name" required
+                           class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <input type="text" id="lastName" placeholder="Last Name" required
+                           class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <input type="email" id="enterpriseEmail" placeholder="Work Email" required
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input type="text" id="company" placeholder="Company Name" required
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <select id="teamSize" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <option value="">Team Size</option>
+                    <option value="10-50">10-50 employees</option>
+                    <option value="51-200">51-200 employees</option>
+                    <option value="201-1000">201-1000 employees</option>
+                    <option value="1000+">1000+ employees</option>
+                </select>
+                <textarea id="message" placeholder="Tell us about your focus challenges..." rows="3"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"></textarea>
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                    Request Demo
+                </button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
