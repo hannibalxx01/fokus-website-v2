@@ -17,6 +17,70 @@
             background-color: #ffffff;
         }
         
+        /* Survey UX Improvements */
+        .survey-step {
+            transition: all 0.3s ease;
+        }
+        
+        .survey-step.error-state {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .survey-step input[type="checkbox"] {
+            transition: all 0.2s ease;
+        }
+        
+        .survey-step input[type="checkbox"]:checked + div {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            transform: scale(1.02);
+        }
+        
+        .survey-step label {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .survey-step label:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .survey-step button {
+            transition: all 0.2s ease;
+        }
+        
+        .survey-step button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .survey-step button:not(:disabled):hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        #userProfileModal {
+            backdrop-filter: blur(4px);
+        }
+        
+        .progress-bar-container {
+            background: #f3f4f6;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        #progressBar {
+            transition: width 0.3s ease;
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+        
         /* Mobile-first optimizations */
         @media (max-width: 640px) {
             .mobile-padding {
@@ -927,8 +991,8 @@
                         <span>Step <span id="currentStep">1</span> of 3</span>
                         <span id="progressPercent">33%</span>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 33%"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 progress-bar-container">
+                        <div id="progressBar" class="h-2 rounded-full" style="width: 33%"></div>
                     </div>
                 </div>
 
@@ -985,7 +1049,7 @@
                 <!-- Step 2: Pain Points -->
                 <div id="step2" class="survey-step hidden">
                     <h4 class="text-lg font-semibold text-black mb-4">What's your biggest struggle with focus & goals?</h4>
-                    <p class="text-gray-600 text-sm mb-6">Select your top 3 challenges</p>
+                    <p class="text-gray-600 text-sm mb-6">Select up to 3 challenges that resonate most with you</p>
                     <div class="space-y-3 mb-6">
                         <label class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
                             <input type="checkbox" name="painPoints" value="distractions" class="mr-3 text-blue-600">
@@ -1080,17 +1144,21 @@
                 </div>
 
                 <!-- Navigation Buttons -->
-                <div class="flex justify-between pt-6 border-t border-gray-100">
+                <div class="flex justify-between items-center pt-6 border-t border-gray-100">
                     <button id="prevBtn" class="px-6 py-2 text-gray-600 hover:text-black transition-colors hidden">
                         ← Previous
                     </button>
-                    <div class="flex-1"></div>
-                    <button id="nextBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                        Next →
+                    <button id="skipBtn" class="px-4 py-2 text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                        Skip survey
                     </button>
-                    <button id="submitBtn" class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium hidden">
-                        Complete Survey 🎉
-                    </button>
+                    <div class="flex gap-3">
+                        <button id="nextBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Next →
+                        </button>
+                        <button id="submitBtn" class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium hidden">
+                            Complete Survey 🎉
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1160,19 +1228,68 @@
         }
 
         function validateStep(step) {
+            let isValid = true;
+            let message = '';
+            
             if (step === 1) {
                 const checked = document.querySelectorAll('input[name="userType"]:checked').length;
-                return checked > 0;
+                isValid = checked > 0;
+                message = 'Please select at least one option that describes you.';
             }
             if (step === 2) {
                 const checked = document.querySelectorAll('input[name="painPoints"]:checked').length;
-                return checked > 0;
+                isValid = checked > 0 && checked <= 3;
+                if (checked === 0) {
+                    message = 'Please select at least one challenge you face.';
+                } else if (checked > 3) {
+                    message = 'Please select your top 3 challenges only.';
+                    isValid = false;
+                }
             }
             if (step === 3) {
                 const checked = document.querySelectorAll('input[name="usageContext"]:checked').length;
-                return checked > 0;
+                isValid = checked > 0;
+                message = 'Please select when you need focus help.';
             }
-            return true;
+            
+            // Show visual feedback
+            const currentStepEl = document.getElementById(`step${step}`);
+            if (!isValid) {
+                currentStepEl.classList.add('error-state');
+                showValidationMessage(message);
+            } else {
+                currentStepEl.classList.remove('error-state');
+                hideValidationMessage();
+            }
+            
+            return isValid;
+        }
+        
+        function showValidationMessage(message) {
+            let messageEl = document.getElementById('validation-message');
+            if (!messageEl) {
+                messageEl = document.createElement('div');
+                messageEl.id = 'validation-message';
+                messageEl.style.cssText = `
+                    background: #fee2e2; 
+                    color: #991b1b; 
+                    padding: 0.75rem 1rem; 
+                    border-radius: 0.5rem; 
+                    margin-top: 1rem; 
+                    font-size: 0.875rem;
+                    border: 1px solid #fecaca;
+                `;
+                document.querySelector('.survey-step:not(.hidden)').appendChild(messageEl);
+            }
+            messageEl.textContent = message;
+            messageEl.style.display = 'block';
+        }
+        
+        function hideValidationMessage() {
+            const messageEl = document.getElementById('validation-message');
+            if (messageEl) {
+                messageEl.style.display = 'none';
+            }
         }
 
         function collectSurveyData() {
@@ -1190,32 +1307,119 @@
             };
         }
 
+        function resetSurveyForm() {
+            // Reset all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Reset comment field
+            document.getElementById('additionalComments').value = '';
+            
+            // Reset step counter
+            currentSurveyStep = 1;
+            
+            // Reset button states
+            document.getElementById('nextBtn').disabled = false;
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').textContent = 'Complete Survey 🎉';
+            
+            // Remove any error highlighting
+            document.querySelectorAll('.survey-step').forEach(step => {
+                step.classList.remove('error-state');
+            });
+        }
+
         function showUserProfileModal() {
+            resetSurveyForm(); // Reset form before showing
             document.getElementById('userProfileModal').classList.remove('hidden');
             showStep(1);
         }
 
         function closeUserProfileModal() {
             document.getElementById('userProfileModal').classList.add('hidden');
-            currentSurveyStep = 1;
+            resetSurveyForm(); // Clean reset when closing
         }
 
-        // Event listeners
+        // Real-time validation counter for Step 2
+        function updatePainPointCounter() {
+            const checked = document.querySelectorAll('input[name="painPoints"]:checked').length;
+            let counterEl = document.getElementById('painpoint-counter');
+            if (!counterEl) {
+                counterEl = document.createElement('div');
+                counterEl.id = 'painpoint-counter';
+                counterEl.style.cssText = `
+                    text-align: center;
+                    margin-top: 1rem;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                `;
+                document.getElementById('step2').appendChild(counterEl);
+            }
+            
+            if (checked === 0) {
+                counterEl.textContent = 'Select your top 3 challenges';
+                counterEl.style.color = '#6b7280';
+            } else if (checked <= 3) {
+                counterEl.textContent = `${checked}/3 selected`;
+                counterEl.style.color = '#059669';
+            } else {
+                counterEl.textContent = `${checked}/3 - Please remove ${checked - 3} selection${checked - 3 > 1 ? 's' : ''}`;
+                counterEl.style.color = '#dc2626';
+            }
+        }
+        
+        // Add real-time feedback for pain points
+        document.addEventListener('change', (e) => {
+            if (e.target.name === 'painPoints') {
+                updatePainPointCounter();
+                
+                // Prevent more than 3 selections
+                const checked = document.querySelectorAll('input[name="painPoints"]:checked');
+                if (checked.length > 3) {
+                    e.target.checked = false;
+                    updatePainPointCounter();
+                }
+            }
+        });
+
+        // Event listeners with improved UX
         document.getElementById('nextBtn').addEventListener('click', () => {
             if (validateStep(currentSurveyStep)) {
                 if (currentSurveyStep < totalSteps) {
                     currentSurveyStep++;
                     showStep(currentSurveyStep);
+                    
+                    // Initialize step-specific features
+                    if (currentSurveyStep === 2) {
+                        updatePainPointCounter();
+                    }
                 }
-            } else {
-                alert('Please select at least one option before continuing.');
             }
         });
 
         document.getElementById('prevBtn').addEventListener('click', () => {
             if (currentSurveyStep > 1) {
+                hideValidationMessage(); // Clear any error messages
                 currentSurveyStep--;
                 showStep(currentSurveyStep);
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('userProfileModal');
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (currentSurveyStep < totalSteps) {
+                        document.getElementById('nextBtn').click();
+                    } else {
+                        document.getElementById('submitBtn').click();
+                    }
+                } else if (e.key === 'Escape') {
+                    closeUserProfileModal();
+                }
             }
         });
 
@@ -1257,9 +1461,13 @@
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
                 }
-            } else {
-                alert('Please select at least one option before submitting.');
             }
+        });
+
+        // Skip survey functionality
+        document.getElementById('skipBtn').addEventListener('click', () => {
+            closeUserProfileModal();
+            showMessage('No worries! You can always complete the survey later to help us personalize foKus for you.', 'success');
         });
 
         // Close modal when clicking outside
