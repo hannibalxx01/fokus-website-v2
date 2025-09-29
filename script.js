@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize pricing buttons
     initPricingButtons();
     
+    // Initialize all button tracking
+    initAllButtonTracking();
+    
     // Initialize modals
     initModals();
 });
@@ -624,8 +627,12 @@ function initPricingButtons() {
         e.preventDefault();
         const planData = e.target.dataset;
         
+        // Detailed button tracking
+        trackEvent('button_click', 'conversion', 'free_plan_button', 0);
         trackEvent('plan_interest', 'conversion', 'free_plan', 0);
-        trackEvent('cta_click', 'engagement', 'get_started_free');
+        trackEvent('cta_click', 'engagement', 'get_started_free', 1);
+        
+        console.log('🎯 FREE PLAN BUTTON CLICKED!');
         
         // Store plan preference
         localStorage.setItem('selectedPlan', 'free');
@@ -656,8 +663,12 @@ function initPricingButtons() {
         e.preventDefault();
         const planData = e.target.dataset;
         
+        // Detailed button tracking
+        trackEvent('button_click', 'conversion', 'pro_plan_button', 4.99);
         trackEvent('plan_interest', 'conversion', 'pro_plan', 4.99);
-        trackEvent('cta_click', 'engagement', 'start_free_trial');
+        trackEvent('cta_click', 'engagement', 'start_free_trial', 1);
+        
+        console.log('🎯 PRO PLAN BUTTON CLICKED! - $4.99/mo');
         
         localStorage.setItem('selectedPlan', 'pro');
         localStorage.setItem('planPrice', '4.99');
@@ -670,13 +681,60 @@ function initPricingButtons() {
         e.preventDefault();
         const planData = e.target.dataset;
         
+        // Detailed button tracking
+        trackEvent('button_click', 'conversion', 'enterprise_plan_button');
         trackEvent('plan_interest', 'conversion', 'enterprise_plan');
-        trackEvent('cta_click', 'engagement', 'contact_sales');
+        trackEvent('cta_click', 'engagement', 'contact_sales', 1);
+        
+        console.log('🎯 ENTERPRISE BUTTON CLICKED! - High-value lead');
         
         localStorage.setItem('selectedPlan', 'enterprise');
         localStorage.setItem('planPrice', 'custom');
         
         showContactModal();
+    });
+}
+
+// Track all other important buttons
+function initAllButtonTracking() {
+    // Email form buttons
+    document.querySelectorAll('.email-form button[type="submit"]')?.forEach(button => {
+        button.addEventListener('click', () => {
+            trackEvent('button_click', 'conversion', 'email_submit_button', 1);
+            console.log('📧 EMAIL SUBMIT BUTTON CLICKED!');
+        });
+    });
+    
+    // Navigation buttons
+    document.querySelectorAll('a[href="#pricing"]')?.forEach(button => {
+        button.addEventListener('click', () => {
+            trackEvent('button_click', 'navigation', 'pricing_nav_button', 1);
+            console.log('🧭 PRICING NAVIGATION CLICKED!');
+        });
+    });
+    
+    // Join Waitlist nav buttons
+    document.querySelectorAll('a[href="#waitlist"]')?.forEach(button => {
+        button.addEventListener('click', () => {
+            trackEvent('button_click', 'navigation', 'waitlist_nav_button', 1);
+            console.log('📝 WAITLIST NAVIGATION CLICKED!');
+        });
+    });
+    
+    // Survey buttons
+    document.getElementById('nextBtn')?.addEventListener('click', () => {
+        trackEvent('button_click', 'engagement', 'survey_next_button', 1);
+        console.log('➡️ SURVEY NEXT BUTTON CLICKED!');
+    });
+    
+    document.getElementById('submitBtn')?.addEventListener('click', () => {
+        trackEvent('button_click', 'engagement', 'survey_submit_button', 1);
+        console.log('✅ SURVEY SUBMIT BUTTON CLICKED!');
+    });
+    
+    document.getElementById('skipBtn')?.addEventListener('click', () => {
+        trackEvent('button_click', 'engagement', 'survey_skip_button', 1);
+        console.log('⏭️ SURVEY SKIP BUTTON CLICKED!');
     });
 }
 
