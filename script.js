@@ -695,46 +695,181 @@ function initPricingButtons() {
     });
 }
 
-// Track all other important buttons
+// Track ALL buttons on the website
 function initAllButtonTracking() {
+    // Universal button tracker - catches ALL buttons and links
+    document.addEventListener('click', (e) => {
+        const element = e.target.closest('button, a, input[type="submit"], input[type="button"]');
+        
+        if (!element) return;
+        
+        // Get button identification info
+        const buttonText = element.textContent?.trim() || element.value || element.alt || 'Unknown Button';
+        const buttonId = element.id || 'no-id';
+        const buttonClass = element.className || 'no-class';
+        const buttonType = element.tagName.toLowerCase();
+        const href = element.href || '';
+        
+        // Create a unique button identifier
+        let buttonIdentifier = '';
+        
+        // Special handling for specific buttons
+        if (element.dataset.plan) {
+            buttonIdentifier = `${element.dataset.plan}_plan_button`;
+        } else if (element.id) {
+            buttonIdentifier = `${element.id}_button`;
+        } else if (buttonText.length > 0 && buttonText.length < 50) {
+            buttonIdentifier = buttonText.toLowerCase()
+                .replace(/[^a-z0-9]/g, '_')
+                .replace(/_+/g, '_')
+                .replace(/^_|_$/g, '');
+        } else if (element.className) {
+            buttonIdentifier = element.className.split(' ')[0] + '_button';
+        } else {
+            buttonIdentifier = `${buttonType}_button`;
+        }
+        
+        // Track the button click
+        trackEvent('button_click', 'all_buttons', buttonIdentifier, 1);
+        
+        // Detailed console logging
+        console.log(`🔘 BUTTON CLICKED:`, {
+            identifier: buttonIdentifier,
+            text: buttonText,
+            id: buttonId,
+            class: buttonClass,
+            type: buttonType,
+            href: href
+        });
+        
+        // Special tracking for specific button types
+        if (href.includes('#')) {
+            trackEvent('navigation_click', 'internal', href.replace('#', ''), 1);
+            console.log(`🔗 INTERNAL LINK: ${href}`);
+        }
+        
+        if (href && !href.includes(window.location.hostname) && href.startsWith('http')) {
+            trackEvent('external_link_click', 'outbound', new URL(href).hostname, 1);
+            console.log(`🌍 EXTERNAL LINK: ${href}`);
+        }
+    });
+    
+    // Specific tracking for important buttons (additional detail)
+    
     // Email form buttons
-    document.querySelectorAll('.email-form button[type="submit"]')?.forEach(button => {
+    document.querySelectorAll('button[type="submit"], input[type="submit"]')?.forEach(button => {
         button.addEventListener('click', () => {
-            trackEvent('button_click', 'conversion', 'email_submit_button', 1);
-            console.log('📧 EMAIL SUBMIT BUTTON CLICKED!');
+            trackEvent('form_submit', 'conversion', 'email_form', 1);
+            console.log('📧 FORM SUBMIT BUTTON CLICKED!');
         });
     });
     
-    // Navigation buttons
-    document.querySelectorAll('a[href="#pricing"]')?.forEach(button => {
-        button.addEventListener('click', () => {
-            trackEvent('button_click', 'navigation', 'pricing_nav_button', 1);
-            console.log('🧭 PRICING NAVIGATION CLICKED!');
+    // Navigation menu links
+    document.querySelectorAll('nav a, .nav-menu a')?.forEach(link => {
+        link.addEventListener('click', () => {
+            const linkText = link.textContent.trim().toLowerCase();
+            trackEvent('nav_click', 'navigation', linkText, 1);
+            console.log(`🧭 NAV CLICKED: ${linkText}`);
         });
     });
     
-    // Join Waitlist nav buttons
-    document.querySelectorAll('a[href="#waitlist"]')?.forEach(button => {
+    // Modal close buttons
+    document.querySelectorAll('[id*="close"], [class*="close"]')?.forEach(button => {
         button.addEventListener('click', () => {
-            trackEvent('button_click', 'navigation', 'waitlist_nav_button', 1);
-            console.log('📝 WAITLIST NAVIGATION CLICKED!');
+            trackEvent('modal_close', 'engagement', 'close_button', 1);
+            console.log('❌ MODAL CLOSE CLICKED!');
         });
     });
     
-    // Survey buttons
+    // Survey specific buttons
     document.getElementById('nextBtn')?.addEventListener('click', () => {
-        trackEvent('button_click', 'engagement', 'survey_next_button', 1);
-        console.log('➡️ SURVEY NEXT BUTTON CLICKED!');
+        trackEvent('survey_action', 'engagement', 'next_step', 1);
+        console.log('➡️ SURVEY NEXT CLICKED!');
+    });
+    
+    document.getElementById('prevBtn')?.addEventListener('click', () => {
+        trackEvent('survey_action', 'engagement', 'previous_step', 1);
+        console.log('⬅️ SURVEY PREVIOUS CLICKED!');
     });
     
     document.getElementById('submitBtn')?.addEventListener('click', () => {
-        trackEvent('button_click', 'engagement', 'survey_submit_button', 1);
-        console.log('✅ SURVEY SUBMIT BUTTON CLICKED!');
+        trackEvent('survey_action', 'conversion', 'survey_complete', 1);
+        console.log('✅ SURVEY SUBMIT CLICKED!');
     });
     
     document.getElementById('skipBtn')?.addEventListener('click', () => {
-        trackEvent('button_click', 'engagement', 'survey_skip_button', 1);
-        console.log('⏭️ SURVEY SKIP BUTTON CLICKED!');
+        trackEvent('survey_action', 'engagement', 'survey_skip', 1);
+        console.log('⏭️ SURVEY SKIP CLICKED!');
+    });
+    
+    // Pro waitlist form
+    document.getElementById('proWaitlistForm')?.addEventListener('submit', () => {
+        trackEvent('form_submit', 'conversion', 'pro_waitlist', 4.99);
+        console.log('💎 PRO WAITLIST FORM SUBMITTED!');
+    });
+    
+    // Enterprise contact form
+    document.getElementById('enterpriseContactForm')?.addEventListener('submit', () => {
+        trackEvent('form_submit', 'conversion', 'enterprise_contact', 1);
+        console.log('🏢 ENTERPRISE CONTACT FORM SUBMITTED!');
+    });
+    
+    // Checkbox tracking (for survey)
+    document.querySelectorAll('input[type="checkbox"]')?.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const isChecked = checkbox.checked;
+            const checkboxName = checkbox.name || 'unknown';
+            const checkboxValue = checkbox.value || 'unknown';
+            
+            trackEvent('checkbox_toggle', 'engagement', `${checkboxName}_${checkboxValue}`, isChecked ? 1 : 0);
+            console.log(`☑️ CHECKBOX ${isChecked ? 'CHECKED' : 'UNCHECKED'}: ${checkboxName} - ${checkboxValue}`);
+        });
+    });
+    
+    // Input field focus tracking
+    document.querySelectorAll('input[type="email"], input[type="text"], textarea')?.forEach(input => {
+        input.addEventListener('focus', () => {
+            const inputType = input.type || 'text';
+            const inputName = input.name || input.id || 'unknown';
+            trackEvent('input_focus', 'engagement', `${inputType}_${inputName}`, 1);
+            console.log(`📝 INPUT FOCUSED: ${inputName}`);
+        });
+        
+        // Track when users actually type in fields
+        input.addEventListener('input', () => {
+            const inputType = input.type || 'text';
+            const inputName = input.name || input.id || 'unknown';
+            trackEvent('input_typing', 'engagement', `${inputType}_${inputName}`, 1);
+            console.log(`⌨️ USER TYPING IN: ${inputName}`);
+        });
+    });
+    
+    // Track any clickable elements that might not be buttons
+    document.querySelectorAll('[onclick], [role="button"], .clickable')?.forEach(element => {
+        element.addEventListener('click', () => {
+            const elementId = element.id || 'clickable_element';
+            const elementText = element.textContent?.trim().substring(0, 30) || 'no_text';
+            trackEvent('clickable_click', 'engagement', elementId, 1);
+            console.log(`👆 CLICKABLE ELEMENT: ${elementId} - ${elementText}`);
+        });
+    });
+    
+    // Track dropdown/select changes
+    document.querySelectorAll('select')?.forEach(select => {
+        select.addEventListener('change', () => {
+            const selectName = select.name || select.id || 'unknown';
+            const selectedValue = select.value;
+            trackEvent('dropdown_change', 'engagement', `${selectName}_${selectedValue}`, 1);
+            console.log(`📋 DROPDOWN CHANGED: ${selectName} = ${selectedValue}`);
+        });
+    });
+    
+    // Track logo clicks (often used as home navigation)
+    document.querySelectorAll('.logo, [class*="logo"], .brand')?.forEach(logo => {
+        logo.addEventListener('click', () => {
+            trackEvent('logo_click', 'navigation', 'home_navigation', 1);
+            console.log('🏠 LOGO/BRAND CLICKED!');
+        });
     });
 }
 
